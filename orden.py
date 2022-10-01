@@ -7,12 +7,12 @@ conexionWin = 'ssh tablet-vending@192.168.50.30 "cd c:/proyecto-vending & '
 
 def main():
     try:
-        orden = pd.read_csv('orden.csv')
+        orden = pd.read_csv('./csv/orden.csv')
     except:
         columnas = {"Descripcion":[],"Cantidad":[],"Precio Unitario":[],
                 "Precio total":[]}
         orden = pd.DataFrame(columnas)
-    precio = pd.read_csv('listaPrecio.csv')
+    precio = pd.read_csv('./csv/listaPrecio.csv')
     try:
         numPizza = int(sys.argv[1])
         pizza = precio.iloc[numPizza][0]

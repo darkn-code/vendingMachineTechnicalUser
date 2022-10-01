@@ -1,17 +1,43 @@
 <!DOCTYPE html>
 <html>
  <head><title>Pizza Nautica</title> 
-    <meta charset=utf-8> </head>
-    <body>
+    <meta charset=utf-8>
+    
+</head>
+    <body onload="verificarBotones({{pizza}})">
         <h1>Escoge tu pizza</h1>
-        
-        <button> <a href="/opcion1/">Peperoni</a></button>
-        <button> <a href="/opcion2/">Pastor</a></button>
-        <button> <a href="/opcion3/">Alambre</a></button>
-        <button> <a href="/opcion4/">Hawaiana</a></button>
-        <button> <a href="/opcion5/">Mexicana</a></button>
-        <button> <a href="/opcion6/">Carnivora</a></button>
-        <button> <a href="/opcion7/">Doble queso</a></button>
-
+        <p>
+            <button class="button1" onclick="irPagina(1)">{{pizza10[1]}}</button>
+            <a>{{pizza[0]}}</a>
+        </p>
+        <p>
+            <button class="button2" onclick="irPagina(2)">{{pizza10[2]}}</button>
+            <a>{{pizza[1]}}</a>
+        </p>
+        <p>
+            <button class="button3" onclick="irPagina(3)">{{pizza10[2]}}</button>
+            <a>{{pizza[2]}}</a>
+        </p>
+        <p>
+            <button class="button4" onclick="irPagina(4)">{{pizza10[3]}}</button> 
+            <a>{{pizza[3]}}</a>
+        </p>
+        <p>
+            <button class="button5" onclick="irPagina(5)">{{pizza10[4]}}</button>  
+            <a>{{pizza[4]}}</a>
+        </p>
+        <p>
+            <button class="button6" onclick="irPagina(6)">{{pizza10[5]}}</button>
+            <a>{{pizza[5]}}</a>
+        </p>
+        <p>
+            <button class="button7" onclick="irPagina(7)">{{pizza10[6]}}</button>
+            <a>{{pizza[6]}}</a>
+        </p>
+        <p>
+            <button class="button8" onclick="irPagina(8)">{{pizza10[7]}}</button>
+            <a>{{pizza[7]}}</a>
+        </p>  
+        <script src="../static/js/script.js"></script>
     </body>
 </html>

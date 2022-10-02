@@ -28,7 +28,7 @@ def main():
     total = precioPizza*cantidad
     nuevo_orden = {"Descripcion":pizza,"Cantidad":cantidad,"Precio Unitario":precioPizza,"Precio total":total}
     orden=orden.append(nuevo_orden,ignore_index=True)
-    orden.to_csv('orden.csv',index=False)
+    orden.to_csv('./csv/orden.csv',index=False)
     print(os.system(conexionWin+'echo "Orden Enviado">Recibido.txt"'))
     print(orden)
 

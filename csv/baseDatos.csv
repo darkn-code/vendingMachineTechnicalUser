@@ -1,16 +1,16 @@
-A,Fecha de  ingreso,B,Fecha de  ingreso
-Peperoni,30/09/2022,Pastor,30/09/2022
-Pastor,30/09/2022,Pastor,30/09/2022
-Alambre,30/09/2022,Pastor,30/09/2022
-Hawaiana,30/09/2022,vacio,
-Mexicana,30/09/2022,Hawaiana,30/09/2022
-Carnivora,30/09/2022,Caducada,25/09/2022
-Doble queso,30/09/2022,Caducada,21/09/2022
-vacio,,Caducada,21/09/2022
-Peperoni,30/09/2022,Caducada,26/09/2022
-Peperoni,30/09/2022,Caducada,25/09/2022
-Peperoni,30/09/2022,Caducada,25/09/2022
-Peperoni,30/09/2022,vacio,
-Caducada,27/09/2022,Caducada,21/09/2022
-Caducada,26/09/2022,Caducada,26/09/2022
+A,Fecha de  ingreso,B,Fecha de  ingreso.1
+vacio,,Doble queso,01/10/2022
+Peperoni,01/10/2022,Caducada,27/09/2022
+Pastor,01/10/2022,Caducada,25/09/2022
+Pastor,01/10/2022,vacio,
+4 Quesos,01/10/2022,Doble queso,01/10/2022
+vacio,,Alambre,01/10/2022
+Caducada,26/09/2022,vacio,
+Caducada,27/09/2022,Alambre,01/10/2022
+vacio,,Hawaiana,01/10/2022
+4 Quesos,01/10/2022,Hawaiana,01/10/2022
+Mexicana,01/10/2022,Caducada,25/09/2022
+Carnivora,01/10/2022,Caducada,27/09/2022
+Mexicana,01/10/2022,vacio,
+Carnivora,01/10/2022,Caducada,26/09/2022
 Caducada,21/09/2022,Caducada,27/09/2022

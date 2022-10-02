@@ -2,7 +2,7 @@ from flask import Flask, render_template
 import os
 import pandas as pd
 
-
+conexionWin = 'scp tablet-vending@192.168.50.30:c:/proyecto-vending/baseDatos.csv ./csv/'
 app = Flask(__name__)
 
 def contando(array,pizza):
@@ -15,6 +15,7 @@ def contando(array,pizza):
 
 @app.route('/')
 def main():
+    os.system(conexionWin)
     listaPizza = pd.read_csv('./csv/listaPrecio.csv')
     baseDatos = pd.read_csv('./csv/baseDatos.csv')
     contadorArray = []

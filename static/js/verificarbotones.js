@@ -6,6 +6,7 @@ function verificarBotones(lenPizza)
     (
         function(result)
         {
+	    console.log(result);
             for (var i = 0; i < parseInt(lenPizza); i++) 
             {
                 let button = document.querySelector(".button" + i.toString());
@@ -22,6 +23,6 @@ function verificarBotones(lenPizza)
             }
         }
     )
-    
+    setTimeout("location.reload(true);",15000); 
   
 }

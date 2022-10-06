@@ -9,7 +9,7 @@ from mdbSerial import *
 from funciones import *
 import funciones
 
-conexionWin = 'scp tablet-vending@192.168.50.30:c:/proyecto-vending/{}./csv/'
+conexionWin = 'scp tablet-vending@192.168.50.30:c:/proyecto-vending/{} ./csv/'
 listaPizza = pd.read_csv('./csv/listaPrecio.csv')
 thread = Thread()
 app = Flask(__name__)
@@ -28,6 +28,7 @@ def cobrar():
 
 @app.route('/comprobarBotones',methods=['GET'])
 def comprobar():
+    os.system(conexionWin.format('baseDatos.csv'))
     base = crearArray()
     response = make_response(json.dumps(base))
     response.content_type = 'application/json'
@@ -51,7 +52,7 @@ def opcion1(numero):
     global nombreDePizza
     thread = Thread(target=cobrarMonto, args=(int(numero),))
     thread.start()
-    os.system('echo {} > numeropizza.txt'.format(numero))
+    os.system('echo {} > numeroPizza.txt'.format(numero))
     print('python3 orden.py '+ numero)
     return numero
 
@@ -70,7 +71,7 @@ def mandarPLC():
     leernumeroPizza = open("numeroPizza.txt",mode='r')
     numero = int(leernumeroPizza.read())
     print('python3 orden.py {}'.format(numero))
-    os.system('python3 orden.py '+ numero)
+    os.system('python3 orden.py '+ str(numero))
     return render_template('volver.html')
 
 if __name__ == '__main__':

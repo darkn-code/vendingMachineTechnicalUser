@@ -44,6 +44,7 @@ def crearArray():
         contador = contando(arrayA,pizza) + contando(arrayB,pizza)
         contadorArray.append(contador)
         contador=0
+    print(contadorArray)
     return contadorArray
 
 def cobrarMonto(monto):
@@ -55,12 +56,15 @@ def cobrarMonto(monto):
     #os.system("echo 'bus-puerto.puerto' | sudo tee /sys/bus/usb/drivers/usb/bind")
     mdb = mdbSerial(PORT)
     mdb.enviarDatos(HABILITAR_MONEDERO)
+    time.sleep(0.1)
     mdb.enviarDatos(HABILITAR_BILLETERO)
-    mdb.reiniciarBuffer()
+    time.sleep(0.1)
+    #mdb.reiniciarBuffer()
     while isRun:
         leerDinero = mdb.recibirDatos()
         leerDinero = leerDinero.decode('utf-8',errors='replace')
         leerDinero = leerDinero.strip()
+        print(leerDinero)
         #Monedas
         if leerDinero == MONEDA_1:
             monto_depositado+=1
@@ -87,9 +91,12 @@ def cobrarMonto(monto):
 
         if (monto_depositado >= listaPizza['precio'][monto]):
             isRun = False
+    time.sleep(1)
     mdb.enviarDatos(RESETEAR_BILLETERO)
+    time.sleep(0.1)
     mdb.enviarDatos(DESHANILITAR_MONEDERO)
-    mbd.mdbSerial.close() 
+    time.sleep(0.1)
+    mdb.mdbSerial.close() 
 
 
 

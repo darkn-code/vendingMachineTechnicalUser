@@ -2,42 +2,27 @@
 <html>
  <head><title>Pizza Nautica</title> 
     <meta charset=utf-8>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="../static/css/style.css" rel="stylesheet" type="text/css">
     
 </head>
-    <body onload="verificarBotones({{pizza}})">
-        <h1>Escoge tu pizza</h1>
-        <p>
-            <button class="button1" onclick="irPagina(1)">{{pizza10[0]}}</button>
-            <a>{{pizza[0]}}</a>
-        </p>
-        <p>
-            <button class="button2" onclick="irPagina(2)">{{pizza10[1]}}</button>
-            <a>{{pizza[1]}}</a>
-        </p>
-        <p>
-            <button class="button3" onclick="irPagina(3)">{{pizza10[2]}}</button>
-            <a>{{pizza[2]}}</a>
-        </p>
-        <p>
-            <button class="button4" onclick="irPagina(4)">{{pizza10[3]}}</button> 
-            <a>{{pizza[3]}}</a>
-        </p>
-        <p>
-            <button class="button5" onclick="irPagina(5)">{{pizza10[4]}}</button>  
-            <a>{{pizza[4]}}</a>
-        </p>
-        <p>
-            <button class="button6" onclick="irPagina(6)">{{pizza10[5]}}</button>
-            <a>{{pizza[5]}}</a>
-        </p>
-        <p>
-            <button class="button7" onclick="irPagina(7)">{{pizza10[6]}}</button>
-            <a>{{pizza[6]}}</a>
-        </p>
-        <p>
-            <button class="button8" onclick="irPagina(8)">{{pizza10[7]}}</button>
-            <a>{{pizza[7]}}</a>
-        </p>  
-        <script src="../static/js/script.js"></script>
+    <body onload="verificarBotones('{{lenPizza-1}}')">
+        <h1><strong>Escoge tu pizza:</strong> </h1>
+        <table>
+            <tr>
+                <td ><strong>Pizzas</strong></td>
+                <td ><strong>Precio (MXN)</strong></td>
+                <td ><strong>Cantidad Disponible</strong></td>
+            </tr>
+            {%for i in range(0, lenPizza-1)%}
+                <tr>
+                    <td><button class="button{{i}}" onclick="irPagina('{{i}}')">{{nombreDePizza[i]}}</button></td>
+                    <td><span>{{precioPizza[i]}}</span></td>
+                    <td><span class="baseDatos{{i}}"+>?</span></td>
+                </tr>
+            {%endfor%}
+        </table>
+        <script src="../static/js/verificarbotones.js"></script>
+        <script src="../static/js/irPagina.js"></script>
     </body>
 </html>

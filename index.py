@@ -1,77 +1,78 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request,  make_response
 import os
+import json
 import pandas as pd
+import time
+from threading import Thread
+import serial
+from mdbSerial import *
+from funciones import *
+import funciones
 
-conexionWin = 'scp tablet-vending@192.168.50.30:c:/proyecto-vending/baseDatos.csv ./csv/'
+conexionWin = 'scp tablet-vending@192.168.50.30:c:/proyecto-vending/{}./csv/'
+listaPizza = pd.read_csv('./csv/listaPrecio.csv')
+thread = Thread()
 app = Flask(__name__)
 
-def contando(array,pizza):
-    contador = 0
-    for data in array:
-        if data == pizza:
-            contador+=1
-    return contador
+@app.route('/data',methods=['GET'])
+def cobrar():
+    global numeroPizza
+    monto_depositado = funciones.monto_depositado
+    leernumeroPizza = open("numeroPizza.txt",mode='r')
+    numeroPizza = int(leernumeroPizza.read())
+    numeroPizza = int(listaPizza['precio'][numeroPizza])
+    print(numeroPizza)
+    response = make_response(json.dumps([monto_depositado,numeroPizza]))
+    response.content_type = 'application/json'
+    return response
 
+@app.route('/comprobarBotones',methods=['GET'])
+def comprobar():
+    base = crearArray()
+    response = make_response(json.dumps(base))
+    response.content_type = 'application/json'
+    return response
 
 @app.route('/')
 def main():
-    os.system(conexionWin)
-    listaPizza = pd.read_csv('./csv/listaPrecio.csv')
-    baseDatos = pd.read_csv('./csv/baseDatos.csv')
-    contadorArray = []
-    print(baseDatos)
-    print(listaPizza['vacio'])
-    arrayA = baseDatos['A'].to_numpy()
-    arrayB = baseDatos['B'].to_numpy()
-    for pizza in listaPizza['vacio']:
-        contador = contando(arrayA,pizza) + contando(arrayB,pizza)
-        contadorArray.append(contador)
-        contador=0
+    #os.system(conexionWin.format('baseDatos.csv'))
+    #os.system(conexionWin.format('listaPrecio.csv'))
+    funciones.isRun = False
+    #os.system("echo 'bus-puerto.puerto' | sudo tee /sys/bus/usb/drivers/usb/unbind")
+    contadorArray = crearArray()
+    context={'precioPizza':listaPizza['precio'],
+             'nombreDePizza':listaPizza['vacio'],
+             'lenPizza':len(listaPizza),
+             }
+    return render_template('index.html',**context)
 
-    print(contadorArray)
-            
+@app.route('/enviarPeticion/<numero>')
+def opcion1(numero):
+    global nombreDePizza
+    thread = Thread(target=cobrarMonto, args=(int(numero),))
+    thread.start()
+    os.system('echo {} > numeropizza.txt'.format(numero))
+    print('python3 orden.py '+ numero)
+    return numero
 
-    return render_template('index.html',pizza=contadorArray,pizza10=listaPizza['vacio'])
+@app.route('/mostarPagina')
+def pagina():
+    time.sleep(0.2)
+    leernumeroPizza = open("numeroPizza.txt",mode='r')
+    numeroPizza = int(leernumeroPizza.read())
+    context={'precioPizza':listaPizza['precio'][numeroPizza],
+             'nombreDePizza':listaPizza['vacio'][numeroPizza],
+             }
+    return render_template('pago.html',**context)
 
-@app.route('/opcion1/')
-def opcion1():
-    os.system('python3 orden.py 0')
-    return render_template('volver.html')
-
-@app.route('/opcion2/')
-def opcion2():
-    os.system('python3 orden.py 1')
-    return render_template('volver.html')
-
-@app.route('/opcion3/')
-def opcion3():
-    os.system('python3 orden.py 2')
-    return render_template('volver.html')
-
-@app.route('/opcion4/')
-def opcion4():
-    os.system('python3 orden.py 3')
-    return render_template('volver.html')
-
-@app.route('/opcion5/')
-def opcion5():
-    os.system('python3 orden.py 4')
-    return render_template('volver.html')
-
-@app.route('/opcion6/')
-def opcion6():
-    os.system('python3 orden.py 5')
-    return render_template('volver.html')
-
-@app.route('/opcion7/')
-def opcion7():
-    os.system('python3 orden.py 6')
-    return render_template('volver.html')
-
-@app.route('/opcion8/')
-def opcion8():
-    os.system('python3 orden.py 7')
+@app.route('/mandarAlPLC')
+def mandarPLC():
+    leernumeroPizza = open("numeroPizza.txt",mode='r')
+    numero = int(leernumeroPizza.read())
+    print('python3 orden.py {}'.format(numero))
+    #os.system('python3 orden.py '+ numero)
     return render_template('volver.html')
 
 if __name__ == '__main__':
+    os.environ['FLASK_ENV'] = 'development'
     app.run(debug=True)

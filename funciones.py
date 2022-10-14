@@ -7,6 +7,7 @@ from mdbSerial import *
 """"Comandos para el billetero y monedero """
 HABILITAR_MONEDERO = '0CFFFFFFFF'
 DESHANILITAR_MONEDERO = '08'
+CANTIDAD_MONDERO = '0A'
 HABILITAR_BILLETERO = '34FFFFFFFF' 
 ACEPTAR_BILLETE = '3501'
 RECHAZAR_BILLETE = '3500'
@@ -21,6 +22,11 @@ BILLETE_500 = '30 94 09'
 MONEDA_1 = '08 52'
 MONEDA_5 = '08 54'
 MONEDA_10 = '08 55'
+
+DISNPESAR_MONEDAS_1 = '0D12'
+DISNPESAR_MONEDAS_5 = '0D14'
+DISNPESAR_MONEDAS_10 = '0D15'
+
 """"Fin Comandos"""
 PORT = '/dev/ttyUSB0'
 
@@ -46,6 +52,18 @@ def crearArray():
         contador=0
     print(contadorArray)
     return contadorArray
+
+def leer_cantidad_monedas(mdb):
+    mdb.enviarDatos(CANTIDAD_MONDERO)
+    leerDatosMdb = mdb.recibirDatos()
+    leerDatosMdb = leerDinero.decode('utf-8',errors='replace')
+    leerDatosMdb = leerDinero.strip()
+    Cantidad_total_1 = int(leerDatosMdb[12:14],16)
+    Cantidad_total_5 = int(leerDatosMdb[18:20],16)
+    Cantidad_total_10 = int(leerDatosMdb[21:23],16)
+    Cantidad_total = Cantidad_total_1*1 + Cantidad_total_5*5 + Cantidad_total_10*10
+    print(Cantidad_total) 
+
 
 def cobrarMonto(monto):
     global isRun,monto_depositado 
@@ -92,6 +110,18 @@ def cobrarMonto(monto):
             monto_depositado+=500
         print(leerDinero[:5]) 
         if (monto_depositado >= listaPizza['precio'][monto]):
+            leer_cantidad_monedas(mdb)
+            cambio = monto_depositado - listaPizza['precio'][monto]
+            if (cambio != 0 ):
+                cantidad_10 = cambio // 10
+                cantidad_5 = (cambio % 10) // 5
+                cantidad_1 = ((cambio % 10) % 5) // 1
+                for i in range(cantidad_10):
+                    mdb.enviarDatos(DISNPESAR_MONEDAS_10)
+                for i in range(cantidad_5):
+                    mdb.enviarDatos(DISNPESAR_MONEDAS_5)
+                for i in range(cantidad_1):
+                    mdb.enviarDatos(DISNPESAR_MONEDAS_1)
             isRun = False
     time.sleep(1)
     mdb.enviarDatos(RESETEAR_BILLETERO)

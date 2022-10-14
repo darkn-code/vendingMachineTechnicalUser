@@ -28,7 +28,7 @@ def cobrar():
 
 @app.route('/comprobarBotones',methods=['GET'])
 def comprobar():
-    os.system(conexionWin.format('baseDatos.csv'))
+    os.system(conexionWin.format('csv/baseDatos.csv'))
     base = crearArray()
     response = make_response(json.dumps(base))
     response.content_type = 'application/json'
@@ -36,8 +36,8 @@ def comprobar():
 
 @app.route('/')
 def main():
-    os.system(conexionWin.format('baseDatos.csv'))
-    os.system(conexionWin.format('listaPrecio.csv'))
+    os.system(conexionWin.format('csv/baseDatos.csv'))
+    os.system(conexionWin.format('csv/listaPrecio.csv'))
     funciones.isRun = False
     os.system("echo 'bus-puerto.puerto' | sudo tee /sys/bus/usb/drivers/usb/unbind")
     contadorArray = crearArray()

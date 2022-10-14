@@ -53,14 +53,16 @@ def cobrarMonto(monto):
     monto_depositado = 0
     time.sleep(1.0)
     print(monto)
-    #os.system("echo 'bus-puerto.puerto' | sudo tee /sys/bus/usb/drivers/usb/bind")
+    os.system("echo 'bus-puerto.puerto' | sudo tee /sys/bus/usb/drivers/usb/bind")
     mdb = mdbSerial(PORT)
     mdb.enviarDatos(HABILITAR_MONEDERO)
     time.sleep(0.1)
     mdb.enviarDatos(HABILITAR_BILLETERO)
     time.sleep(0.1)
-    #mdb.reiniciarBuffer()
+    mdb.reinicarBuffer()
     while isRun:
+        #monto_depositado+=10
+        #time.sleep(1)
         leerDinero = mdb.recibirDatos()
         leerDinero = leerDinero.decode('utf-8',errors='replace')
         leerDinero = leerDinero.strip()

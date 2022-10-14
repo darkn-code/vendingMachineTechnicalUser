@@ -18,9 +18,9 @@ BILLETE_100 = '30 92 09'
 BILLETE_200 = '30 93 09'
 BILLETE_500 = '30 94 09'
 
-MONEDA_1 = '08 52 00'
-MONEDA_5 = '08 54 00'
-MONEDA_10 = '08 55 00'
+MONEDA_1 = '08 52'
+MONEDA_5 = '08 54'
+MONEDA_10 = '08 55'
 """"Fin Comandos"""
 PORT = '/dev/ttyUSB0'
 
@@ -68,11 +68,11 @@ def cobrarMonto(monto):
         leerDinero = leerDinero.strip()
         print(leerDinero)
         #Monedas
-        if leerDinero == MONEDA_1:
+        if leerDinero[:5] == MONEDA_1:
             monto_depositado+=1
-        if leerDinero == MONEDA_5:
+        if leerDinero[:5] == MONEDA_5:
             monto_depositado+=5
-        if leerDinero == MONEDA_10:
+        if leerDinero[:5] == MONEDA_10:
             monto_depositado+=10
         #Billetes
         if leerDinero == BILLETE_20:
@@ -90,7 +90,7 @@ def cobrarMonto(monto):
         if leerDinero == BILLETE_500:
             mdb.enviarDatos(ACEPTAR_BILLETE)
             monto_depositado+=500
-
+        print(leerDinero[:5]) 
         if (monto_depositado >= listaPizza['precio'][monto]):
             isRun = False
     time.sleep(1)

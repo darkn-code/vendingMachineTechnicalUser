@@ -72,7 +72,15 @@ def mandarPLC():
     numero = int(leernumeroPizza.read())
     print('python3 orden.py {}'.format(numero))
     os.system('python3 orden.py '+ str(numero))
-    return render_template('volver.html')
+    return render_template('horneando.html')
+
+@app.route('/pizzaTerminada')
+def pizzaTerminada():
+    status = open("./csv/status.txt",mode='r')
+    if status.read() == 'Pizza Finalizada':
+        return render_template('volver.html')
+    else:
+        return render_template('horneando.html')   
 
 if __name__ == '__main__':
     os.environ['FLASK_ENV'] = 'development'

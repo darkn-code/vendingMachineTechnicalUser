@@ -39,7 +39,7 @@ def main():
     os.system(conexionWin.format('csv/baseDatos.csv'))
     os.system(conexionWin.format('csv/listaPrecio.csv'))
     funciones.isRun = False
-    os.system("echo 'bus-puerto.puerto' | sudo tee /sys/bus/usb/drivers/usb/unbind")
+    #os.system("echo '1-1.4' | sudo tee /sys/bus/usb/drivers/usb/unbind")
     contadorArray = crearArray()
     context={'precioPizza':listaPizza['precio'],
              'nombreDePizza':listaPizza['vacio'],

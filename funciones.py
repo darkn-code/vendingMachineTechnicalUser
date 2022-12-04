@@ -54,10 +54,12 @@ def crearArray():
     return contadorArray
 
 def leer_cantidad_monedas(mdb):
+    time.sleep(0.1)
     mdb.enviarDatos(CANTIDAD_MONDERO)
     leerDatosMdb = mdb.recibirDatos()
-    leerDatosMdb = leerDinero.decode('utf-8',errors='replace')
-    leerDatosMdb = leerDinero.strip()
+    leerDatosMdb = leerDatosMdb.decode('utf-8',errors='replace')
+    leerDatosMdb = leerDatosMdb.strip()
+    print(leerDatosMdb)
     Cantidad_total_1 = int(leerDatosMdb[12:14],16)
     Cantidad_total_5 = int(leerDatosMdb[18:20],16)
     Cantidad_total_10 = int(leerDatosMdb[21:23],16)
@@ -69,9 +71,9 @@ def cobrarMonto(monto):
     global isRun,monto_depositado 
     isRun = True
     monto_depositado = 0
-    time.sleep(1.0)
     print(monto)
-    os.system("echo 'bus-puerto.puerto' | sudo tee /sys/bus/usb/drivers/usb/bind")
+        #os.system("echo '1-1.4' | sudo tee /sys/bus/usb/drivers/usb/bind")
+    time.sleep(1.0)
     mdb = mdbSerial(PORT)
     mdb.enviarDatos(HABILITAR_MONEDERO)
     time.sleep(0.1)
@@ -110,18 +112,23 @@ def cobrarMonto(monto):
             monto_depositado+=500
         print(leerDinero[:5]) 
         if (monto_depositado >= listaPizza['precio'][monto]):
-            leer_cantidad_monedas(mdb)
+            #leer_cantidad_monedas(mdb)
             cambio = monto_depositado - listaPizza['precio'][monto]
+            print('Cambio: '+str(cambio))
             if (cambio != 0 ):
+                time.sleep(0.5)
                 cantidad_10 = cambio // 10
                 cantidad_5 = (cambio % 10) // 5
                 cantidad_1 = ((cambio % 10) % 5) // 1
                 for i in range(cantidad_10):
                     mdb.enviarDatos(DISNPESAR_MONEDAS_10)
+                    time.sleep(0.3)
                 for i in range(cantidad_5):
                     mdb.enviarDatos(DISNPESAR_MONEDAS_5)
+                    time.sleep(0.3)
                 for i in range(cantidad_1):
                     mdb.enviarDatos(DISNPESAR_MONEDAS_1)
+                    time.sleep(0.3)
             isRun = False
     time.sleep(1)
     mdb.enviarDatos(RESETEAR_BILLETERO)

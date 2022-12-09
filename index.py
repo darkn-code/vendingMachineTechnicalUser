@@ -77,9 +77,13 @@ def mandarPLC():
 @app.route('/pizzaTerminada')
 def pizzaTerminada():
     status = open("./csv/status.txt",mode='r')
-    if status.read() == 'Pizza Finalizada':
+    status = status.read()
+    print(status.strip() == "Pizza")
+    if status.strip() == "Pizza":
+        print('Lista la pizza')
         return render_template('volver.html')
     else:
+        print("pizza horneando")
         return render_template('horneando.html')   
 
 if __name__ == '__main__':

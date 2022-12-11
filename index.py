@@ -34,7 +34,7 @@ def comprobar():
     response.content_type = 'application/json'
     return response
 
-@app.rout('/')
+@app.route('/')
 def index():
     return render_template('index.html')
 

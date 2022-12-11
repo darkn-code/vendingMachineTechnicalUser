@@ -74,7 +74,10 @@ def cobrarMonto(monto):
     print(monto)
         #os.system("echo '1-1.4' | sudo tee /sys/bus/usb/drivers/usb/bind")
     time.sleep(1.0)
-    mdb = mdbSerial(PORT)
+    try:
+        mdb = mdbSerial(PORT)
+    except:
+        mdb = mdbSerial('/dev/ttyUSB5')
     mdb.enviarDatos(HABILITAR_MONEDERO)
     time.sleep(0.1)
     mdb.enviarDatos(HABILITAR_BILLETERO)

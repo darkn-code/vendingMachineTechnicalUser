@@ -34,7 +34,11 @@ def comprobar():
     response.content_type = 'application/json'
     return response
 
-@app.route('/')
+@app.rout('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/main')
 def main():
     os.system(conexionWin.format('csv/baseDatos.csv'))
     os.system(conexionWin.format('csv/listaPrecio.csv'))
@@ -45,7 +49,7 @@ def main():
              'nombreDePizza':listaPizza['vacio'],
              'lenPizza':len(listaPizza),
              }
-    return render_template('index.html',**context)
+    return render_template('main.html',**context)
 
 @app.route('/enviarPeticion/<numero>')
 def opcion1(numero):

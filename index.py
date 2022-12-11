@@ -78,17 +78,21 @@ def mandarPLC():
     os.system('python3 orden.py '+ str(numero))
     return render_template('horneando.html')
 
-@app.route('/pizzaTerminada')
+@app.route('/pizzaTerminada',methods=['GET'])
 def pizzaTerminada():
-    status = open("./csv/status.txt",mode='r')
-    status = status.read()
-    print(status.strip() == "Pizza")
-    if status.strip() == "Pizza":
-        print('Lista la pizza')
-        return render_template('volver.html')
-    else:
-        print("pizza horneando")
-        return render_template('horneando.html')   
+    while True:
+        status = open("./csv/status.txt",mode='r')
+        status = status.read()
+        print(status.strip() == "Pizza")
+        if status.strip() == "Pizza":
+            print('Lista la pizza')
+            return render_template('volver.html')
+            break
+    #else:
+     #   print("pizza horneando")
+      #  response = make_response(json.dumps([status]))
+        #response.content_type = 'application/json'
+        #return response  
 
 if __name__ == '__main__':
     os.environ['FLASK_ENV'] = 'development'

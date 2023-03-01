@@ -3,7 +3,7 @@ import time
 import serial
 from threading import Thread
 
-port = '/dev/ttyUSB4'
+port = '/dev/ttyUSB1'
 baudRate = 115200
 numero = '"5537950046"'
 comando_habilitar_sms = 'AT+CMGF=1\r'
@@ -26,6 +26,7 @@ def main():
     sms.port = port
     sms.baudRarte = baudRate
     sms.open()
+    time.sleep(1)
     sms.write(comando_habilitar_sms.encode())
     leerDatos = Thread(target=leerDatosSerial)
     leerDatos.start()

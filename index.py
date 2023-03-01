@@ -9,7 +9,7 @@ from mdbSerial import *
 from funciones import *
 import funciones
 
-conexionWin = 'scp tablet-vending@192.168.50.30:c:/proyecto-vending/{} ./csv/'
+conexionWin = 'scp tablet-vending@192.168.1.3:c:/proyecto-vending/{} ./csv/'
 listaPizza = pd.read_csv('./csv/listaPrecio.csv')
 thread = Thread()
 app = Flask(__name__)

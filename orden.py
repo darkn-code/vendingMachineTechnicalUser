@@ -3,7 +3,7 @@ import numpy as np
 import os
 import sys
 
-conexionWin = 'ssh tablet-vending@192.168.50.30 "cd c:/proyecto-vending & '
+conexionWin = 'ssh tablet-vending@192.168.1.3 "cd c:/proyecto-vending & '
 
 def main():
     try:

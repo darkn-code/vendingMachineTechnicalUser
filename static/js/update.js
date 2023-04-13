@@ -6,10 +6,11 @@ var intervalID = setInterval(update_values,2000);
     var tm = data.done(function(result){
       $(".pago").text("");
       $(".pago").text(`Monto Depositado: ${result[0]} MXN`);
-      $(".falta_pago").text(`Falta depositar: ${result[1]-result[0]} MXN`);
-      if (result[0] >= result[1]){
+      $(".falta_pago").text(`Falta depositar: ${result[1]-result[0]} MXN`);     
+      
+      if (result[0] >= result[1]){   
         window.location.href = "/mandarAlPLC";
-        setTimeout("alert('Compra completada');",1000)
+        setTimeout("alert('Compra completada');",1);
       } 
     })
     

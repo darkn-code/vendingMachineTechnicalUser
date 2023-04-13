@@ -3,26 +3,34 @@
  <head><title>Pizza Nautica</title> 
     <meta charset=utf-8>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link href="../static/css/style.css" rel="stylesheet" type="text/css">
-    
+    <link href="../static/css/style.css" rel="stylesheet" type="text/css">   
 </head>
-    <body onload="verificarBotones('{{lenPizza-1}}')">
+    <body onload="verificarBotones()">
         <h1><strong>Escoge tu pizza:</strong> </h1>
         <table>
             <tr>
                 <td ><strong>Pizzas</strong></td>
                 <td ><strong>Precio (MXN)</strong></td>
+                <td ><strong>Cantidad</strong></td>
                 <td ><strong>Cantidad Disponible</strong></td>
             </tr>
             {%for i in range(0, lenPizza-1)%}
                 <tr>
-                    <td><button class="button{{i}}" onclick="irPagina('{{i}}')">{{nombreDePizza[i]}}</button></td>
+                    <td><span>{{nombreDePizza[i]}}</span></td>
                     <td><span>{{precioPizza[i]}}</span></td>
-                    <td><span class="baseDatos{{i}}"+>?</span></td>
+                    <td><span>
+                        <button onclick="decrementar('{{i}}')">-</button>
+                        <input type="number" id="cantidad{{i}}" value="0" min="0">
+                        <button onclick="incrementar('{{i}}')">+</button>
+                    </span></td>
+                    <td><span class="baseDatos{{i}}">?</span></td>
                 </tr>
             {%endfor%}
+
         </table>
-        <script src="../static/js/verificarbotones.js"></script>
+        <p id="total" class="totalClass">?</p>
+        <button class="compra" onclick="irPaginaP()">Comprar Pizzas</button>
+        <script src="../static/js/verificarbotones.js" array="{{ precioPizza.to_numpy().tolist() }}" ></script>
         <script src="../static/js/irPagina.js"></script>
     </body>
 </html>

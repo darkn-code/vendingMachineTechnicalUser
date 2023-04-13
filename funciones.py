@@ -71,6 +71,7 @@ def cobrarMonto(monto):
     global isRun,monto_depositado 
     isRun = True
     monto_depositado = 0
+    #monto = listaPizza['precio'][monto]
     print(monto)
         #os.system("echo '1-1.4' | sudo tee /sys/bus/usb/drivers/usb/bind")
     time.sleep(1.0)
@@ -114,9 +115,9 @@ def cobrarMonto(monto):
             mdb.enviarDatos(ACEPTAR_BILLETE)
             monto_depositado+=500
         print(leerDinero[:5]) 
-        if (monto_depositado >= listaPizza['precio'][monto]):
+        if (monto_depositado >= monto):
             #leer_cantidad_monedas(mdb)
-            cambio = monto_depositado - listaPizza['precio'][monto]
+            cambio = monto_depositado - monto
             print('Cambio: '+str(cambio))
             if (cambio != 0 ):
                 time.sleep(0.5)
@@ -138,9 +139,5 @@ def cobrarMonto(monto):
     time.sleep(0.1)
     mdb.enviarDatos(DESHANILITAR_MONEDERO)
     time.sleep(0.1)
-    mdb.mdbSerial.close() 
-
-
-
-
-
+    mdb.mdbSerial.close()
+    os.system('python3 verificarMonedero.py')

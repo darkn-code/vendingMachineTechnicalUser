@@ -7,6 +7,12 @@ table {
   h1{
     color: red;
   }
+  .pizzasCuadro{
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    border: 3px solid blue;
+  }
   .totalClass{
     font: 2em sans-serif;
     font-style: italic;
@@ -76,5 +82,9 @@ table {
   
   tfoot th {
     text-align: right;
+  }
+  .pizzaImg{
+    width: 70px;
+    height: 70px;
   }
   

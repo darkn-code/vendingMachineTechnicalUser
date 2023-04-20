@@ -1,6 +1,7 @@
-var intervalID = setInterval(verificarBotones,5000);
+var intervalID = setInterval(verificarBotones,1000);
 var script = document.querySelector('script[src="../static/js/verificarbotones.js"]');
 var precioPizza = JSON.parse(script.getAttribute('array'));
+var precioPizzaFria = JSON.parse(script.getAttribute('arrayFrio'));
 var total = document.getElementById("total");
 total.textContent = "Total: 0 MXN";
 var pizza = precioPizza.length -1;
@@ -15,19 +16,12 @@ function verificarBotones()
         console.log(result);
             for (var i = 0; i < pizza; i++) 
             {
-                //let button = document.querySelector(".button" + i.toString());
                 var input = document.getElementById("cantidad" + i.toString());
-                input.max = result[i];
+                var inputFrio = document.getElementById("cantidadFria" + i.toString());
+                input.max = result[i] - inputFrio.value;
+                inputFrio.max = result[i] - input.value;
                 $(".baseDatos"+i.toString()).text("");
                 $(".baseDatos"+i.toString()).text(result[i]);
-/*                 if (result[i] <= 0)
-                {
-                    button.disabled = true;
-                }
-                else
-                {
-                    button.disabled = false;
-                } */
             }
 
         }
@@ -39,25 +33,32 @@ function verificarBotones()
 function irPaginaP() {
 
     var cantidadPizzas = [];
+    var cantidadFriaPizzas = [];
+    var cantidaFriaPizzasStr = '';
     var cantidaPizzasStr = '';
     for (var i = 0; i < pizza; i++)
     {
         var input = document.getElementById("cantidad" + i.toString());
+        var inputFrio = document.getElementById("cantidadFria" + i.toString());
         cantidadPizzas.push(input.value);
+        cantidadFriaPizzas.push(inputFrio.value)
         if (pizza-1 == i){
-            cantidaPizzasStr += input.value.toString()
+            cantidaPizzasStr += input.value.toString();
+            cantidaFriaPizzasStr += inputFrio.value.toString();
         }
         else{
-            cantidaPizzasStr += input.value.toString() + ','
+            cantidaPizzasStr += input.value.toString() + ',';
+            cantidaFriaPizzasStr += inputFrio.value.toString() + ',';
         }
 
     }
     console.log(cantidaPizzasStr);
+    console.log(cantidaFriaPizzasStr);
     if (acc == 0){
         alert('No escogio ninguna pizza!')
     }
     else{
-        $.get( "/enviarPeticion/"+ cantidaPizzasStr + '/'  + acc );
+        $.get( "/enviarPeticion/"+ cantidaPizzasStr + '/'  + cantidaFriaPizzasStr + '/'  + acc );
         setTimeout(() => console.log("Esperando"), 500);
         window.location.href = "/mostarPagina";
     }
@@ -70,7 +71,6 @@ function incrementar(i){
         total.textContent = "Total: "+ acc + " MXN";
     }
     document.getElementById("cantidad" + i.toString()).stepUp();
-
 }
 function decrementar(i){
     var input = document.getElementById("cantidad" + i.toString());
@@ -79,5 +79,21 @@ function decrementar(i){
         total.textContent = "Total: "+ acc + " MXN";
     }
     document.getElementById("cantidad" + i.toString()).stepDown();
+}
 
+function incrementarFrio(i){
+    var input = document.getElementById("cantidadFria" + i.toString());
+    if (input.value < input.max){
+        acc +=  precioPizzaFria[i];
+        total.textContent = "Total: "+ acc + " MXN";
+    }
+    document.getElementById("cantidadFria" + i.toString()).stepUp();
+}
+function decrementarFrio(i){
+    var input = document.getElementById("cantidadFria" + i.toString());
+    if (input.value > input.min){
+        acc -= precioPizzaFria[i];
+        total.textContent = "Total: "+ acc + " MXN";
+    }
+    document.getElementById("cantidadFria" + i.toString()).stepDown();
 }

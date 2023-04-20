@@ -9,28 +9,41 @@
         <h1><strong>Escoge tu pizza:</strong> </h1>
         <table>
             <tr>
+                <td></td>
                 <td ><strong>Pizzas</strong></td>
                 <td ><strong>Precio (MXN)</strong></td>
                 <td ><strong>Cantidad</strong></td>
                 <td ><strong>Cantidad Disponible</strong></td>
             </tr>
             {%for i in range(0, lenPizza-1)%}
+            <table class="pizzasCuadro">
                 <tr>
-                    <td><span>{{nombreDePizza[i]}}</span></td>
+                    <td><img src="../static/imagen/pizza.png" class="pizzaImg" alt="Figura"></td>
+                    <td><span>{{nombreDePizza[i]}} Lista para comer</span></td>
                     <td><span>{{precioPizza[i]}}</span></td>
                     <td><span>
                         <button onclick="decrementar('{{i}}')">-</button>
                         <input type="number" id="cantidad{{i}}" value="0" min="0">
                         <button onclick="incrementar('{{i}}')">+</button>
                     </span></td>
+                </tr>
+                <tr>
+                    <td><img src="../static/imagen/pizza.png" class="pizzaImg" alt="Figura"></td>
+                    <td><span>{{nombreDePizza[i]}} Sin Hornear!</span></td>
+                    <td><span>{{precioPizzaFria[i]}}</span></td>
+                    <td><span>
+                        <button onclick="decrementarFrio('{{i}}')">-</button>
+                        <input type="number" id="cantidadFria{{i}}" value="0" min="0">
+                        <button onclick="incrementarFrio('{{i}}')">+</button>
+                    </span></td>
                     <td><span class="baseDatos{{i}}">?</span></td>
                 </tr>
+            </table>
             {%endfor%}
-
         </table>
         <p id="total" class="totalClass">?</p>
         <button class="compra" onclick="irPaginaP()">Comprar Pizzas</button>
-        <script src="../static/js/verificarbotones.js" array="{{ precioPizza.to_numpy().tolist() }}" ></script>
+        <script src="../static/js/verificarbotones.js" array="{{ precioPizza.to_numpy().tolist() }}" arrayFrio="{{ precioPizzaFria.to_numpy().tolist() }}" ></script>
         <script src="../static/js/irPagina.js"></script>
     </body>
 </html>

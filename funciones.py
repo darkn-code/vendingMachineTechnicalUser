@@ -2,7 +2,9 @@ import pandas as pd
 import numpy as np 
 import time
 import os
+import mysql.connector
 from mdbSerial import *
+from movimientosSQl import *
 
 """"Comandos para el billetero y monedero """
 HABILITAR_MONEDERO = '0CFFFFFFFF'
@@ -33,6 +35,20 @@ PORT = '/dev/ttyUSB0'
 isRun = True
 monto_depositado = 0
 listaPizza = pd.read_csv('./csv/listaPrecio.csv')
+pathConf = './config/{}'
+
+
+def leerArray(array):
+    leer = open(pathConf.format(array),mode='r')
+    arrayLeido = leer.read()
+    leer.close()
+    return arrayLeido.split(',')
+
+def leertxt(texto):
+    leer = open(pathConf.format(texto),mode='r')
+    textoleido = int(leer.read())
+    leer.close()
+    return textoleido
 
 def contando(array,pizza):
     contador = 0
@@ -66,6 +82,17 @@ def leer_cantidad_monedas(mdb):
     Cantidad_total = Cantidad_total_1*1 + Cantidad_total_5*5 + Cantidad_total_10*10
     print(Cantidad_total) 
 
+
+def enviarBaseDatos(monto):
+    mydb = mysql.connector.connect(
+            host= credenciales["host"],
+            user = credenciales["user"],
+            password = credenciales["password"],
+            database = credenciales["database"]
+            )
+    mycursor = mydb.cursor()
+    idMovimiento = efectuarMovimiento(mydb,monto)
+    verificarMovimiento(mycursor,idMovimiento)
 
 def cobrarMonto(monto):
     global isRun,monto_depositado 

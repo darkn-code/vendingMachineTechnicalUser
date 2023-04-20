@@ -1,10 +1,10 @@
-vacio,precio,dias de caducidad,tiempo de coccion
-Peperoni,99,3,10
-Pastor,199,5,60
-Alambre,199,2,10
-Hawaiana,199,4,10
-Mexicana,199,3,10
-Carnivora,239,3,10
-Doble queso,239,3,10
-4 Quesos,250,2,10
-Caducada,0,0,97
+vacio,precio,precioFria,dias de caducidad,tiempo de coccion
+Peperoni,99,79,3,10
+Pastor,199,179,5,60
+Alambre,199,179,2,10
+Hawaiana,199,179,4,10
+Mexicana,199,179,3,10
+Carnivora,239,209,3,10
+Doble queso,239,209,3,10
+4 Quesos,250,230,2,10
+Caducada,0,0,0,97

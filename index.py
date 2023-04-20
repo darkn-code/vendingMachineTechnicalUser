@@ -137,7 +137,7 @@ def mandarPLC():
     tempPizza = leertxt("tempPizza.txt")
     numero = leertxt("numeroPizza.txt")
     print('python3 orden.py {} {} {} {}'.format(numero,1,tempPizza,idCompra))
-    os.system('python orden.py {} {} {} {}'.format(numero,1,tempPizza, idCompra))
+    os.system('python3 orden.py {} {} {} {}'.format(numero,1,tempPizza, idCompra))
     return render_template('horneando.html')
 
 @app.route('/pizzaTerminada',methods=['GET'])

@@ -100,7 +100,7 @@ def cobrarMonto(monto):
     monto_depositado = 0
     #monto = listaPizza['precio'][monto]
     print(monto)
-        #os.system("echo '1-1.4' | sudo tee /sys/bus/usb/drivers/usb/bind")
+    #os.system("echo '1-1.4' | sudo tee /sys/bus/usb/drivers/usb/bind")
     time.sleep(1.0)
     try:
         mdb = mdbSerial(PORT)

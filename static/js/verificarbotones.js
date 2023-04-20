@@ -29,9 +29,19 @@ function verificarBotones()
     //setTimeout("location.reload(true);",15000); 
   
 }
-
-function irPaginaP() {
-
+function irPaginaP(){
+    if (acc == 0){
+        modalPizza.showModal();
+    }
+    else{
+        modal.showModal();
+    }
+}
+function cancelarPedido(){
+    modalPizza.close()
+    modal.close()
+}
+function irPaginaEfectivo() {
     var cantidadPizzas = [];
     var cantidadFriaPizzas = [];
     var cantidaFriaPizzasStr = '';

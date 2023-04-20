@@ -42,7 +42,19 @@
             {%endfor%}
         </table>
         <p id="total" class="totalClass">?</p>
-        <button class="compra" onclick="irPaginaP()">Comprar Pizzas</button>
+        <button class="compra" onclick="irPaginaP()">Continuar</button>
+        <dialog id="modalPizza">
+            <h2>No escogiste pizza</h2>
+            <button onclick="cancelarPedido()">Acpetar</button>
+        </dialog>
+        <dialog id="modal">
+            <h2>Seleciona su metodo de pago</h2>
+            <div class="compra">
+                <button onclick="irPaginaEfectivo()">Efectivo</button>
+                <button>tarjeta</button>
+            </div>
+            <button onclick="cancelarPedido()">Cancelar</button>
+        </dialog>
         <script src="../static/js/verificarbotones.js" array="{{ precioPizza.to_numpy().tolist() }}" arrayFrio="{{ precioPizzaFria.to_numpy().tolist() }}" ></script>
         <script src="../static/js/irPagina.js"></script>
     </body>

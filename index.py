@@ -16,12 +16,11 @@ pathConf = './config/{}'
 thread = Thread()
 app = Flask(__name__)
 
-
 @app.route('/data',methods=['GET'])
 def cobrar():
     global numeroPizza
-    monto_depositado = funciones.monto_depositado
-    #monto_depositado = 400
+    #monto_depositado = funciones.monto_depositado
+    monto_depositado = 400
     monto = leertxt("monto.txt")
     #numeroPizza = int(listaPizza['precio'][numeroPizza])
     print(monto)
@@ -31,7 +30,7 @@ def cobrar():
 
 @app.route('/comprobarBotones',methods=['GET'])
 def comprobar():
-    os.system(conexionWin.format('csv/baseDatos.csv'))
+    #os.system(conexionWin.format('csv/baseDatos.csv'))
     base = crearArray()
     response = make_response(json.dumps(base))
     response.content_type = 'application/json'
@@ -44,8 +43,8 @@ def index():
 @app.route('/main/<tempPizza>')
 def main(tempPizza):
     os.system('echo {} > {}'.format(tempPizza,pathConf.format("tempPizza.txt")))
-    os.system(conexionWin.format('csv/baseDatos.csv'))
-    os.system(conexionWin.format('csv/listaPrecio.csv'))
+    #os.system(conexionWin.format('csv/baseDatos.csv'))
+    #os.system(conexionWin.format('csv/listaPrecio.csv'))
     funciones.isRun = False
     #os.system("echo '1-1.4' | sudo tee /sys/bus/usb/drivers/usb/unbind")
     contadorArray = crearArray()
@@ -59,8 +58,8 @@ def main(tempPizza):
 @app.route('/enviarPeticion/<cantidad>/<cantidadFria>/<monto>')
 def opcion1(cantidad,cantidadFria,monto):
     global nombreDePizza
-    thread = Thread(target=cobrarMonto, args=(int(monto),))
-    thread.start()
+    #thread = Thread(target=cobrarMonto, args=(int(monto),))
+    #thread.start()
     os.system('echo {} > {}'.format(cantidad,pathConf.format("cantidad.txt")))
     os.system('echo {} > {}'.format(cantidadFria,pathConf.format("cantidadFria.txt")))
     os.system('echo {} > {}'.format(monto,pathConf.format("monto.txt")))

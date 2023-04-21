@@ -41,7 +41,7 @@ function cancelarPedido(){
     modalPizza.close()
     modal.close()
 }
-function irPaginaEfectivo() {
+function irPaginaEfectivo(metodopago) {
     var cantidadPizzas = [];
     var cantidadFriaPizzas = [];
     var cantidaFriaPizzasStr = '';
@@ -70,7 +70,7 @@ function irPaginaEfectivo() {
     else{
         $.get( "/enviarPeticion/"+ cantidaPizzasStr + '/'  + cantidaFriaPizzasStr + '/'  + acc );
         setTimeout(() => console.log("Esperando"), 500);
-        window.location.href = "/mostarPagina";
+        window.location.href = "/mostarPagina/" + metodopago.toString();
     }
 }
 

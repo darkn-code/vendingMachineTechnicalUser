@@ -49,11 +49,25 @@
         </dialog>
         <dialog id="modal">
             <h2>Seleciona su metodo de pago</h2>
-            <div class="compra">
-                <button onclick="irPaginaEfectivo()">Efectivo</button>
-                <button>tarjeta</button>
+            <div class="centrado">
+                <button onclick="irPaginaEfectivo(1)" class="centrado">Efectivo</button>
+                <button onclick="irPaginaEfectivo(0)" class="centrado">Tarjeta</button>
             </div>
-            <button onclick="cancelarPedido()">Cancelar</button>
+
+            <!-- <div class="centrado">
+                <select class="totalClass">
+                    <option>Efectivo</option>
+                    <option>Tarjeta</option>
+                </select>
+            </div>
+            <p class="centrado">
+                <button class="centrado">Aceptar</button>
+            </p> -->
+
+            <div class="centrado">
+                <button onclick="cancelarPedido()" class="centrado">Regresar</button>
+            </div>
+           
         </dialog>
         <script src="../static/js/verificarbotones.js" array="{{ precioPizza.to_numpy().tolist() }}" arrayFrio="{{ precioPizzaFria.to_numpy().tolist() }}" ></script>
         <script src="../static/js/irPagina.js"></script>

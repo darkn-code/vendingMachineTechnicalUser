@@ -13,6 +13,7 @@ import funciones
 conexionWin = 'scp tablet-vending@192.168.1.3:c:/proyecto-vending/{} ./csv/'
 listaPizza = pd.read_csv('./csv/listaPrecio.csv')
 pathConf = './config/{}'
+pathOrden = './csv/{}'
 thread = Thread()
 app = Flask(__name__)
 
@@ -20,7 +21,7 @@ app = Flask(__name__)
 def cobrar():
     global numeroPizza
     #monto_depositado = funciones.monto_depositado
-    monto_depositado = 400
+    monto_depositado = 100
     monto = leertxt("monto.txt")
     #numeroPizza = int(listaPizza['precio'][numeroPizza])
     print(monto)
@@ -35,6 +36,10 @@ def comprobar():
     response = make_response(json.dumps(base))
     response.content_type = 'application/json'
     return response
+@app.route('/compraCancelada')
+def compraCancelada():
+    return render_template('cancelado.html')
+
 
 @app.route('/')
 def index():
@@ -78,7 +83,9 @@ def opcion1(cantidad,cantidadFria,monto):
             i = 0
     os.system('echo {} > {}'.format(i,pathConf.format("numeroPizza.txt")))
     try:
-        idCompra = int(open(pathConf.format("idCompra.txt"),mode='r').read())
+        orden = pd.read_csv(pathOrden.format('orden.csv'))
+        idCompra = int(orden.loc[len(orden)-1,'IdCompra'])
+        #idCompra = int(open(pathConf.format("idCompra.txt"),mode='r').read())
     except:
         os.system('echo {} > {}'.format(0,pathConf.format("idCompra.txt")))
     idCompra += 1
@@ -86,8 +93,8 @@ def opcion1(cantidad,cantidadFria,monto):
     print('python3 orden.py {} {} {} {}'.format(i,1,tempPizza,idCompra))
     return monto
 
-@app.route('/mostarPagina')
-def pagina():
+@app.route('/mostarPagina/<metodoPago>')
+def pagina(metodoPago):
     time.sleep(0.2)
     leertempPizza = open(pathConf.format("tempPizza.txt"),mode='r')
     tempPizza = int(leertempPizza.read())
@@ -126,7 +133,8 @@ def pagina():
         'cantidadPizza' : cantidadPizza,
         'lenPizza':len(precioPizza),
         'subTotal' : subTotal,
-        'monto' : monto
+        'monto' : monto,
+        'metodoPago' : int(metodoPago)
              }
     
     return render_template('pago.html',**context)
@@ -137,7 +145,7 @@ def mandarPLC():
     tempPizza = leertxt("tempPizza.txt")
     numero = leertxt("numeroPizza.txt")
     print('python3 orden.py {} {} {} {}'.format(numero,1,tempPizza,idCompra))
-    os.system('python3 orden.py {} {} {} {}'.format(numero,1,tempPizza, idCompra))
+    os.system('python orden.py {} {} {} {}'.format(numero,1,tempPizza, idCompra))
     return render_template('horneando.html')
 
 @app.route('/pizzaTerminada',methods=['GET'])
@@ -162,8 +170,8 @@ def pizzaTerminada():
                     else:
                         print('Lista la pizza')
                         monto = leertxt("monto.txt")
-                        threadSQL = Thread(target=enviarBaseDatos, args=(monto,))
-                        threadSQL.start()
+                        #threadSQL = Thread(target=enviarBaseDatos, args=(monto,))
+                        #threadSQL.start()
                         return render_template('volver.html')
                         break
             cantidadArray[i] = str(int(cantidadArray[i]) - 1)
@@ -178,6 +186,7 @@ def pizzaTerminada():
         else:
             print(status)
             
+
 if __name__ == '__main__':
     os.environ['FLASK_ENV'] = 'development'
     app.run(debug=True)

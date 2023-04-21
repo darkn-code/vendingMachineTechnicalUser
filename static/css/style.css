@@ -41,6 +41,17 @@ table {
     margin-left: auto;
     margin-right: 50px;
   }
+  .centrado{
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+  }
+  .codigo{
+    margin-top: 10px;
+    display: inline-flex;
+    align-items: center;
+    text-align: center;
+  }
   html {
     font-family: 'helvetica neue', helvetica, arial, sans-serif;
   }

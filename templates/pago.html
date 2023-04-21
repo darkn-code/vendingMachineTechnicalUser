@@ -6,7 +6,7 @@
     <link href="../static/css/style.css" rel="stylesheet" type="text/css">
     <meta charset="UTF-8">
 </head>
- <script src="../static/js/update.js" type="text/javascript"></script>
+ <script src="../static/js/update.js" type="text/javascript" metodoPago="{{ metodoPago}}"></script>
     <body onload="update_values();">
 	<h1><strong>Resumen de la compra </strong></h1>
     <table>
@@ -25,13 +25,60 @@
         </tr>
         {%endfor%}
     </table>
-    <p id="total" class="totalClass">Total: {{monto}} MXN</p>
-    <p class="totalClass">
-        <span class="pago">?</span>
-    </p>
-    <p class="totalClass">
-        <span class="falta_pago">?</span>
-    </p>
-    <button class="compra" onclick="window.location.href = '/';">Cancelar Compra</button>
+    <dialog id="modalEfectivo">
+        {% if metodoPago %}
+        <p class="totalClass">
+            <h1 class="centrado">Ya puedes ingresar tu efectivo</h1>
+        </p>
+        {% endif %}
+        <p class="totalClass">
+            <label class="">Si cuenta con un Codigo Credito, ingresalo aqui:</label>
+            <input class="" type="text" inputmode="numeric" id="codigo" minlength="4" maxlength="8" size="10">        </p>
+        <p class="totalClass">
+            <span id="total" class="">Total: {{monto}} MXN</span>
+        </p>
+        {% if metodoPago %}
+            <p class="totalClass">
+                <span class="pago">?</span>
+            </p>
+            <p class="totalClass">
+                <span class="falta_pago">?</span>
+            </p>
+        {% else %}
+        <button class="compra">Continuar</button>
+        {% endif %}
+        <button class="compra" onclick="window.location.href = '/main/1';">Regresar</button>
+        <button class="compra" onclick="ModalCanceladoInit()">Cancelar Compra</button>
+        {% if metodoPago %}
+            <h2>Importante: No se acepta monedas 10cts, 50cts,20 MXN</h2>
+        {% else %}
+            <h2>Importante: Presione Continuar para seguir con el pago en la terminal</h2>
+        {% endif %}
+    </dialog>
+    <dialog id="modalInicio">
+        {% if metodoPago %}
+        <h1>IMPORTANTE</h1>
+        <h2>No se acepta monedas 10cts,50cts,20 MXN</h2>
+        <h3>
+            Importante: Confirma que tu orden este correcta y que cuentes con el importe total, ya que una vez que se ingresa un billete o moneda no es posible regresar el efectivo,
+            En ese caso se le brindara un codigo de credito por el valor depositado, que podra utilizarlo en futuras compras.
+        </h3>
+        {% else %}
+        <h2> Importante: Confirma que tu orden esta correcta antes de pagar</h2>
+        {% endif %}
+        <button onclick="cerrarModal()" >Aceptar</button>
+    </dialog>
+    <dialog id="compraCompletada">
+        <h2>Compra Exitosa!</h2>
+        <h3><span class="cambio"></span></h3>
+    </dialog>
+    <dialog id="compraCancelada">
+        <h2>Esta Seguro de cancelar la compra?</h2>
+        <h3>Si cancela la compra se va generar un codigo con el valor depositado</h3>
+        <div class="centrado">
+            <button onclick="ModalCancelado()" >Aceptar</button>
+            <button onclick="cerrarModalCancelado()" >Cancelar</button>
+        </div>
+    </dialog>
     </body>
 </html>

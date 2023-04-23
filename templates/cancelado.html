@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html>
- <head><title>Pizza Nauta</title> 
-    <meta http-equiv="refresh" content="10;url=http://127.0.0.1:5000/" /> </head>
-    <body>
-	<h1>Pizza Cancelada!..</h1>
+{% extends 'base.html'  %}
+{% block head %}
+<meta http-equiv="refresh" content="10;url=http://127.0.0.1:5000/" /> 
+{% endblock %}
+{% block content %}
+    <h1>Pizza Cancelada!..</h1>
     <h2>Codigo:</h2>
-    <h3>a#c%$nnm^67</h3>
-    </body>
-</html>
+    <h3>{{ codigo}}</h3>
+{% endblock %}

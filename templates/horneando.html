@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html>
- <head>
-    <title>Pizza Nautica</title> 
+{% extends 'base.html'  %}
+{% block head %}
     <meta http-equiv="refresh" content="5;url=http://127.0.0.1:5000/pizzaTerminada"/>
- </head>
-    <body>
-	<h1>Horneando la pizza!..</h1>
-        <video src="../static/pizza.mp4" autoplay loop></video>
-    </body>
-</html>
+{% endblock %}
+{% block content %}
+    <h1>Horneando la pizza!..</h1>
+    <video src="../static/videos/pizza.mp4" autoplay loop></video>
+{% endblock %}

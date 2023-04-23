@@ -17,14 +17,40 @@ pathOrden = './csv/{}'
 thread = Thread()
 app = Flask(__name__)
 
+
+@app.route('/verificarCodigo/<codigo>',methods=['GET'])
+def verificarCodigo(codigo):
+    leerCodigo = pd.read_csv(pathOrden.format('codigoCredito.csv'))
+    #arrayCodigo = leerCodigo.loc[:,'codigo']
+    for index,row in leerCodigo.iterrows():
+        if (codigo == row['codigo']):
+            print('Codigo Encontrado')
+            array = ['1',str(index)]
+            arrayString =','.join(array)
+            os.system('echo {} > {}'.format(arrayString,pathConf.format("codigoCredito.txt")))
+            response = make_response(json.dumps([1]))
+            response.content_type = 'application/json'
+            return response 
+    print("Codigo no encontrado")
+    response = make_response(json.dumps([0]))
+    response.content_type = 'application/json'
+    return response
+
 @app.route('/data',methods=['GET'])
 def cobrar():
     global numeroPizza
     #monto_depositado = funciones.monto_depositado
-    monto_depositado = 100
+    monto_depositado = 80
     monto = leertxt("monto.txt")
+    codigoArray = leerArray("codigoCredito.txt")
+    isCodigo = int(codigoArray[0])
+    if isCodigo:
+        leerCodigo = pd.read_csv(pathOrden.format('codigoCredito.csv'))
+        codigoMonto = int(leerCodigo.loc[int(codigoArray[1]),'monto'])
+        print(codigoMonto)
+        monto_depositado += codigoMonto
     #numeroPizza = int(listaPizza['precio'][numeroPizza])
-    print(monto)
+    print(monto_depositado)
     response = make_response(json.dumps([monto_depositado,monto]))
     response.content_type = 'application/json'
     return response
@@ -36,9 +62,19 @@ def comprobar():
     response = make_response(json.dumps(base))
     response.content_type = 'application/json'
     return response
-@app.route('/compraCancelada')
-def compraCancelada():
-    return render_template('cancelado.html')
+
+
+@app.route('/compraCancelada/<monto>')
+def compraCancelada(monto):
+    codigoGenerado = genearCodigo(monto,7)
+    leerCodigo = pd.read_csv(pathOrden.format('codigoCredito.csv'))
+    leerCodigo = pd.concat([leerCodigo,codigoGenerado],ignore_index=True)
+    leerCodigo.to_csv(pathOrden.format('codigoCredito.csv'),index=False)
+    codigo = codigoGenerado.loc[0,'codigo']
+    context = {
+        'codigo' : codigo
+    }
+    return render_template('cancelado.html',**context)
 
 
 @app.route('/')
@@ -172,6 +208,18 @@ def pizzaTerminada():
                         monto = leertxt("monto.txt")
                         #threadSQL = Thread(target=enviarBaseDatos, args=(monto,))
                         #threadSQL.start()
+                        codigoArray = leerArray("codigoCredito.txt")
+                        isCodigo = int(codigoArray[0])
+                        leerCodigo = pd.read_csv(pathOrden.format('codigoCredito.csv'))
+                        codigo = leerCodigo.loc[int(codigoArray[1]),'codigo']
+                        if isCodigo:
+                            for index,row in leerCodigo.iterrows():
+                                if (codigo == row['codigo']):
+                                    leerCodigo = leerCodigo.drop(index).reset_index(drop=True)
+                                    leerCodigo.to_csv(pathOrden.format('codigoCredito.csv'),index=False)
+                            arrayString = '0,0'
+                            os.system('echo {} > {}'.format(arrayString,pathConf.format("codigoCredito.txt")))
+                            print(leerCodigo)
                         return render_template('volver.html')
                         break
             cantidadArray[i] = str(int(cantidadArray[i]) - 1)
@@ -188,5 +236,5 @@ def pizzaTerminada():
             
 
 if __name__ == '__main__':
-    os.environ['FLASK_ENV'] = 'development'
+    os.environ['FLASK_DEBUG'] = 'development'
     app.run(debug=True)

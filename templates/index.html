@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html>
- <head><title>Pizza Nauta</title> 
-    <meta charset=utf-8>  
-    <link href="../static/css/style.css" rel="stylesheet" type="text/css">  
-</head>
-    <body>
-        <h1><strong>Bienvenidos a Pizza Nauta!!!</strong> </h1>
-        <button onclick='window.location.href = "/main/1";' >Presiona para comenzar</button>
-    </body>
-</html>
+{% extends 'base.html'  %}
+{% block content %}
+   <!--  <h1><strong>Bienvenidos a Pizza Nauta!!!</strong> </h1> -->
+    <img src="../static/imagen/background.png" class="imagenFondo" onclick='window.location.href = "/main/1";'/>
+   <!--  <button onclick='window.location.href = "/main/1";' >Presiona para comenzar</button> -->
+{% endblock %}

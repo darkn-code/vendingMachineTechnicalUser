@@ -1,5 +1,7 @@
 var script = document.querySelector('script[src="../static/js/update.js"]');
 var metodoPago = JSON.parse(script.getAttribute('metodoPago'));
+var monto = 0;
+
 
 function update_values(){
   modalInicio.showModal();
@@ -10,6 +12,7 @@ function update_values(){
     console.log(metodoPago);
     var data = $.get('/data');
     var tm = data.done(function(result){
+      monto = result[0];
       $(".pago").text("");
       $(".pago").text(`Monto Depositado: ${result[0]} MXN`);
       $(".falta_pago").text(`Falta depositar: ${result[1]-result[0]} MXN`);
@@ -35,11 +38,14 @@ function cerrarModal(){
  }
  function ModalCancelado(){
   compraCancelada.close();
-  window.location.href = "/compraCancelada";
+  console.log(monto);
+  window.location.href = "/compraCancelada/"+monto.toString();
  }
  function ModalCanceladoInit(){
   compraCancelada.showModal();
  }
+
+
  
 
 

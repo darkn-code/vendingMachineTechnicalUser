@@ -5,6 +5,10 @@ import os
 import mysql.connector
 from mdbSerial import *
 from movimientosSQl import *
+import random
+import string
+from datetime import datetime
+
 
 """"Comandos para el billetero y monedero """
 HABILITAR_MONEDERO = '0CFFFFFFFF'
@@ -31,12 +35,27 @@ DISNPESAR_MONEDAS_10 = '0D15'
 
 """"Fin Comandos"""
 PORT = '/dev/ttyUSB0'
+import random
+import string
+
+
+chars = string.ascii_uppercase + string.ascii_lowercase + string.digits + "!@#$%^&*()"
 
 isRun = True
 monto_depositado = 0
 listaPizza = pd.read_csv('./csv/listaPrecio.csv')
 pathConf = './config/{}'
 
+def genearCodigo(monto,cantChar):
+    codigo = ''.join(random.choice(chars) for i in range(cantChar))
+    now = now = datetime.now()
+    fila = {
+        'codigo': [codigo],
+        'monto' : [monto],
+        "fecha" : [now.strftime("%d %m %y")],
+        "hora" : [now.strftime("%H:%M:%S")]
+    }
+    return pd.DataFrame(fila)
 
 def leerArray(array):
     leer = open(pathConf.format(array),mode='r')

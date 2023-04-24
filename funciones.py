@@ -8,7 +8,8 @@ from movimientosSQl import *
 import random
 import string
 from datetime import datetime
-
+import random
+import string
 
 """"Comandos para el billetero y monedero """
 HABILITAR_MONEDERO = '0CFFFFFFFF'
@@ -35,8 +36,7 @@ DISNPESAR_MONEDAS_10 = '0D15'
 
 """"Fin Comandos"""
 PORT = '/dev/ttyUSB0'
-import random
-import string
+sqlLastIDComand = '(SELECT MAX(movIdMovimiento) FROM movimientos)'
 
 
 chars = string.ascii_uppercase + string.ascii_lowercase + string.digits + "!@#$%^&*()"
@@ -44,6 +44,7 @@ chars = string.ascii_uppercase + string.ascii_lowercase + string.digits + "!@#$%
 isRun = True
 monto_depositado = 0
 listaPizza = pd.read_csv('./csv/listaPrecio.csv')
+pathOrden = './csv/orden.csv'
 pathConf = './config/{}'
 
 def genearCodigo(monto,cantChar):
@@ -101,6 +102,17 @@ def leer_cantidad_monedas(mdb):
     Cantidad_total = Cantidad_total_1*1 + Cantidad_total_5*5 + Cantidad_total_10*10
     print(Cantidad_total) 
 
+def buscarMontoID(lastId,orden):
+    ordenID = orden[(orden['IdCompra'] == lastId)]
+    return float(ordenID['Precio total'].sum())
+
+def cambiarID(lastId,idCompra,orden):
+    ordenLast = orden[orden['IdCompra'] == idCompra]
+    for index,row in ordenLast.iterrows():
+        orden.loc[index,'IdCompra'] = lastId
+    print(orden)
+    orden.to_csv(pathOrden,index=False)
+    
 
 def enviarBaseDatos(monto):
     mydb = mysql.connector.connect(
@@ -110,8 +122,20 @@ def enviarBaseDatos(monto):
             database = credenciales["database"]
             )
     mycursor = mydb.cursor()
+    lastId = verificarMovimiento(mycursor,sqlLastIDComand)
+    orden = pd.read_csv(pathOrden)
+    idCompra = int(orden.loc[len(orden)-1,'IdCompra']) - 1
+    print('{} {}'.format(idCompra,lastId))
+    if idCompra > lastId:
+        montoAnterior = buscarMontoID(idCompra,orden)
+        idMovimiento = efectuarMovimiento(mydb,montoAnterior)
+        enviarBaseDatos(monto)
+        return True
     idMovimiento = efectuarMovimiento(mydb,monto)
-    verificarMovimiento(mycursor,idMovimiento)
+    if idCompra < lastId:
+        cambiarID(lastId,idCompra,orden)
+    lastId = verificarMovimiento(mycursor,idMovimiento)
+    return True
 
 def cobrarMonto(monto):
     global isRun,monto_depositado 

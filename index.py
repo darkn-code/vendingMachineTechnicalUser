@@ -40,7 +40,7 @@ def verificarCodigo(codigo):
 def cobrar():
     global numeroPizza
     #monto_depositado = funciones.monto_depositado
-    monto_depositado = 80
+    monto_depositado = 50
     monto = leertxt("monto.txt")
     codigoArray = leerArray("codigoCredito.txt")
     isCodigo = int(codigoArray[0])
@@ -206,8 +206,8 @@ def pizzaTerminada():
                     else:
                         print('Lista la pizza')
                         monto = leertxt("monto.txt")
-                        #threadSQL = Thread(target=enviarBaseDatos, args=(monto,))
-                        #threadSQL.start()
+                        threadSQL = Thread(target=enviarBaseDatos, args=(monto,))
+                        threadSQL.start()
                         codigoArray = leerArray("codigoCredito.txt")
                         isCodigo = int(codigoArray[0])
                         leerCodigo = pd.read_csv(pathOrden.format('codigoCredito.csv'))
@@ -220,7 +220,11 @@ def pizzaTerminada():
                             arrayString = '0,0'
                             os.system('echo {} > {}'.format(arrayString,pathConf.format("codigoCredito.txt")))
                             print(leerCodigo)
-                        return render_template('volver.html')
+                        idCompra = leertxt('idCompra.txt')
+                        content = {
+                            'idCompra' : idCompra
+                        }
+                        return render_template('volver.html',**content)
                         break
             cantidadArray[i] = str(int(cantidadArray[i]) - 1)
             cantidad =','.join(cantidadArray)

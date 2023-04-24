@@ -16,12 +16,12 @@ function update_values(){
       $(".pago").text("");
       $(".pago").text(`Monto Depositado: ${result[0]} MXN`);
       $(".falta_pago").text(`Falta depositar: ${result[1]-result[0]} MXN`);
-      if ((result[0]-result[1])!=0){
-        $(".cambio").text(`Recoja su cambio ${result[0]-result[1]} MXN`); 
-      }
       if (result[0] >= result[1]){ 
-        compraCompletada.showModal();  
-        setTimeout(() => window.location.href = "/mandarAlPLC", 2000);
+        compraCompletada.showModal();
+        if ((result[0]-result[1]) > 0){
+          $(".cambio").text(`Recoja su cambio ${result[0]-result[1]} MXN`); 
+        }  
+        setTimeout(() => window.location.href = "/mandarAlPLC", 4000);
       } 
     })
    }

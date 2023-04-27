@@ -21,14 +21,21 @@
     </table>
     <dialog id="modalEfectivo">
         {% if metodoPago %}
-        <p class="totalClass">
-            <h1 class="centrado">Ya puedes ingresar tu efectivo</h1>
-        </p>
+            {% if codigoCredito %}
+                <p class="totalClass">
+                    <h1 class="centrado">Ingresa tu código de crédito</h1>
+                    <h2>Si en caso de que tu importe total sea mayor que el importe del código de crédito, deberás depositar la diferencia únicamente en EFECTIVO.</h2>
+                </p>
+                <p class="totalClass">
+                    <label class="codigoLabel" id="codigoLabel">Si cuenta con un Codigo Credito, ingresalo aqui:</label>
+                    <input class="codigo" type="text" onclick="tecladoModal()" id="codigo">        
+                </p>
+            {% else%}
+                <p class="totalClass">
+                    <h1 class="centrado">Ya puedes ingresar tu efectivo</h1>
+                </p>
+            {% endif %}
         {% endif %}
-        <p class="totalClass">
-            <label class="codigoLabel" id="codigoLabel">Si cuenta con un Codigo Credito, ingresalo aqui:</label>
-            <input class="codigo" type="text" onclick="tecladoModal()" id="codigo">        
-        </p>
         <dialog id="teclado">
             <h1>Ingrese su codigo y luego presione enter para continuar</h1>
             <input id="inputTeclado" class="inputTeclado" placeholder="Escriba su codigo credito" />
@@ -50,7 +57,7 @@
         <button class="compra" onclick="window.location.href = '/main/1';">Regresar</button>
         <button class="compra" onclick="ModalCanceladoInit()">Cancelar Compra</button>
         {% if metodoPago %}
-            <h2>Importante: No se acepta monedas 10cts, 50cts,20 MXN</h2>
+            <h2>Importante: No se acepta billetas de $500 ni monedas 10cts, 50cts y 20 pesos.</h2>
         {% else %}
             <h2>Importante: Presione Continuar para seguir con el pago en la terminal</h2>
         {% endif %}
@@ -58,7 +65,7 @@
     <dialog id="modalInicio">
         {% if metodoPago %}
         <h1>IMPORTANTE</h1>
-        <h2>No se acepta monedas 10cts,50cts,20 MXN</h2>
+        <h2>No se aceptan Billetes de $500 , monedas 0.10cts,0.50cts y 20 pesos.</h2>
         <h3>
             Importante: Confirma que tu orden este correcta y que cuentes con el importe total, ya que una vez que se ingresa un billete o moneda no es posible regresar el efectivo,
             En ese caso se le brindara un codigo de credito por el valor depositado, que podra utilizarlo en futuras compras.

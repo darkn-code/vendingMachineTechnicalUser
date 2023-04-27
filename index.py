@@ -66,14 +66,22 @@ def comprobar():
 
 @app.route('/compraCancelada/<monto>')
 def compraCancelada(monto):
-    codigoGenerado = genearCodigo(monto,7)
-    leerCodigo = pd.read_csv(pathOrden.format('codigoCredito.csv'))
-    leerCodigo = pd.concat([leerCodigo,codigoGenerado],ignore_index=True)
-    leerCodigo.to_csv(pathOrden.format('codigoCredito.csv'),index=False)
-    codigo = codigoGenerado.loc[0,'codigo']
+    if monto == '0':
+        validarCodigo = 0
+        codigo = '' 
+        return render_template('index.html')     
+    else:
+        validarCodigo = 1
+        codigoGenerado = genearCodigo(monto,7)
+        leerCodigo = pd.read_csv(pathOrden.format('codigoCredito.csv'))
+        leerCodigo = pd.concat([leerCodigo,codigoGenerado],ignore_index=True)
+        leerCodigo.to_csv(pathOrden.format('codigoCredito.csv'),index=False)
+        codigo = codigoGenerado.loc[0,'codigo']
     context = {
-        'codigo' : codigo
+        'codigo' : codigo,
+        'validarCodigo' : validarCodigo
     }
+    print('Validar Codigo:',validarCodigo)
     return render_template('cancelado.html',**context)
 
 
@@ -132,6 +140,10 @@ def opcion1(cantidad,cantidadFria,monto):
 @app.route('/mostarPagina/<metodoPago>')
 def pagina(metodoPago):
     time.sleep(0.2)
+    codigoCredito = 0
+    if metodoPago == '2':
+        metodoPago = 1
+        codigoCredito = 1
     leertempPizza = open(pathConf.format("tempPizza.txt"),mode='r')
     tempPizza = int(leertempPizza.read())
     cantidadArray = leerArray("cantidad.txt")
@@ -170,7 +182,8 @@ def pagina(metodoPago):
         'lenPizza':len(precioPizza),
         'subTotal' : subTotal,
         'monto' : monto,
-        'metodoPago' : int(metodoPago)
+        'metodoPago' : int(metodoPago),
+        'codigoCredito' : codigoCredito
              }
     
     return render_template('pago.html',**context)

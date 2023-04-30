@@ -28,7 +28,7 @@
                 </p>
                 <p class="totalClass">
                     <label class="codigoLabel" id="codigoLabel">Si cuenta con un Codigo Credito, ingresalo aqui:</label>
-                    <input class="codigo" type="text" onclick="tecladoModal()" id="codigo">        
+                    <input class="codigo" type="text" onclick="tecladoModal()" id="codigo" autocomplete="off"/>        
                 </p>
             {% else%}
                 <p class="totalClass">
@@ -38,7 +38,7 @@
         {% endif %}
         <dialog id="teclado">
             <h1>Ingrese su codigo y luego presione enter para continuar</h1>
-            <input id="inputTeclado" class="inputTeclado" placeholder="Escriba su codigo credito" />
+            <input id="inputTeclado" class="inputTeclado" placeholder="Escriba su codigo credito" autocomplete="off"/>
             <div class="simple-keyboard"></div>
         </dialog>
         <p class="totalClass">
@@ -54,10 +54,10 @@
         {% else %}
         <button class="compra">Continuar</button>
         {% endif %}
-        <button class="compra" onclick="window.location.href = '/main/1';">Regresar</button>
+        <button class="compra" onclick="window.location.href = '/main';">Regresar</button>
         <button class="compra" onclick="ModalCanceladoInit()">Cancelar Compra</button>
         {% if metodoPago %}
-            <h2>Importante: No se acepta billetas de $500 ni monedas 10cts, 50cts y 20 pesos.</h2>
+            <h2>Importante: No se acepta billetes de $500 ni monedas 10cts, 50cts y 20 pesos.</h2>
         {% else %}
             <h2>Importante: Presione Continuar para seguir con el pago en la terminal</h2>
         {% endif %}

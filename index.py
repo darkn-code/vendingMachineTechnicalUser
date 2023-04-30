@@ -27,7 +27,7 @@ def verificarCodigo(codigo):
             print('Codigo Encontrado')
             array = ['1',str(index)]
             arrayString =','.join(array)
-            os.system('echo {} > {}'.format(arrayString,pathConf.format("codigoCredito.txt")))
+            escribirJson("codigoCredito",arrayString)
             response = make_response(json.dumps([1]))
             response.content_type = 'application/json'
             return response 
@@ -40,9 +40,9 @@ def verificarCodigo(codigo):
 def cobrar():
     global numeroPizza
     #monto_depositado = funciones.monto_depositado
-    monto_depositado = 50
-    monto = leertxt("monto.txt")
-    codigoArray = leerArray("codigoCredito.txt")
+    monto_depositado = 0
+    monto = leerJson("monto")
+    codigoArray = leerJson("codigoCredito")
     isCodigo = int(codigoArray[0])
     if isCodigo:
         leerCodigo = pd.read_csv(pathOrden.format('codigoCredito.csv'))
@@ -87,68 +87,72 @@ def compraCancelada(monto):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    response = make_response(render_template('index.html'))
+    cookies = request.cookies
+    for cookie in cookies:
+        response.delete_cookie(cookie)
+    return response
 
-@app.route('/main/<tempPizza>')
-def main(tempPizza):
-    os.system('echo {} > {}'.format(tempPizza,pathConf.format("tempPizza.txt")))
+@app.route('/main')
+def main():
     #os.system(conexionWin.format('csv/baseDatos.csv'))
     #os.system(conexionWin.format('csv/listaPrecio.csv'))
     funciones.isRun = False
     #os.system("echo '1-1.4' | sudo tee /sys/bus/usb/drivers/usb/unbind")
     contadorArray = crearArray()
+   
     context={'precioPizza':listaPizza['precio'],
              'precioPizzaFria':listaPizza['precioFria'],
              'nombreDePizza':listaPizza['vacio'],
              'lenPizza':len(listaPizza),
-             }
+             } 
+    idCompra = generarIDCompra()
+    escribirJson("idCompra",idCompra)
     return render_template('main.html',**context)
 
-@app.route('/enviarPeticion/<cantidad>/<cantidadFria>/<monto>')
-def opcion1(cantidad,cantidadFria,monto):
+@app.route('/enviarPeticion')
+def enviarPeticion():
     global nombreDePizza
+    cantidad = request.cookies.get("cantidad")
+    cantidadFria = request.cookies.get("cantidadFria")
+    monto = request.cookies.get("monto")
     #thread = Thread(target=cobrarMonto, args=(int(monto),))
     #thread.start()
-    os.system('echo {} > {}'.format(cantidad,pathConf.format("cantidad.txt")))
-    os.system('echo {} > {}'.format(cantidadFria,pathConf.format("cantidadFria.txt")))
-    os.system('echo {} > {}'.format(monto,pathConf.format("monto.txt")))
-    tempPizza = leertxt("tempPizza.txt")
+    tempPizza = request.cookies.get("tempPizza")
     cantidadArray = cantidad.split(',')
-    print(len(cantidadArray))
-    i = 0
-    while int(cantidadArray[i]) == 0:
-        i +=1
-        if i == len(cantidadArray):
-            print("pizza frias!")
-            if not tempPizza:
-                return render_template('volver.html')
-            os.system('echo {} > {}'.format(0,pathConf.format("tempPizza.txt")))
-            cantidadArray = cantidadFria.split(',')
-            i = 0
-    os.system('echo {} > {}'.format(i,pathConf.format("numeroPizza.txt")))
-    try:
-        orden = pd.read_csv(pathOrden.format('orden.csv'))
-        idCompra = int(orden.loc[len(orden)-1,'IdCompra'])
-        #idCompra = int(open(pathConf.format("idCompra.txt"),mode='r').read())
-    except:
-        os.system('echo {} > {}'.format(0,pathConf.format("idCompra.txt")))
-    idCompra += 1
-    os.system('echo {} > {}'.format(idCompra,pathConf.format("idCompra.txt")))
-    print('python3 orden.py {} {} {} {}'.format(i,1,tempPizza,idCompra))
-    return monto
+    numPizza = sacarPizzas(cantidadArray)
+    if numPizza == -1:
+        print("pizza frias!")
+        cantidadArray = cantidadFria.split(',')
+        numPizza = sacarPizzas(cantidadArray)
+        tempPizza = 0
+        if numPizza == -1:
+            return redirect(url_for('index'))
+        
+    idCompra = leerJson("idCompra")
+    print('python3 orden.py {} {} {} {}'.format(numPizza,1,tempPizza,idCompra))
+    response = make_response([numPizza])
+    escribirJson("cantidad",cantidad)
+    escribirJson("cantidadFria",cantidadFria)
+    escribirJson("numPizza",numPizza)
+    escribirJson("tempPizza",tempPizza)
+    escribirJson("monto",int(monto))
+    return response
 
-@app.route('/mostarPagina/<metodoPago>')
-def pagina(metodoPago):
+@app.route('/mostarPagina')
+def pagina():
     time.sleep(0.2)
+    metodoPago = int(request.cookies.get("metodoPago"))
     codigoCredito = 0
-    if metodoPago == '2':
+    if metodoPago == 2:
         metodoPago = 1
         codigoCredito = 1
-    leertempPizza = open(pathConf.format("tempPizza.txt"),mode='r')
-    tempPizza = int(leertempPizza.read())
-    cantidadArray = leerArray("cantidad.txt")
-    cantidadFriaArray = leerArray("cantidadFria.txt")
-    monto = leertxt("monto.txt")
+   
+    tempPizza = int(leerJson("tempPizza"))
+    monto = leerJson("monto")
+    cantidadArray = leerJson("cantidad").split(',')
+    cantidadFriaArray = leerJson("cantidadFria").split(',')
+
     nombreDePizza = []
     precioPizza = []
     cantidadPizza = []
@@ -165,16 +169,17 @@ def pagina(metodoPago):
              nombreDePizza.append(listaPizza['vacio'][i]+' Congelada')
              cantidadPizza.append(cantidadFriaArray[i])
              subTotal.append(int(listaPizza['precioFria'][i]) * int(cantidadFriaArray[i]))
-
-    numero = leertxt("numeroPizza.txt")
+   
+    numero = int(leerJson("numPizza"))
     if tempPizza:
         cantidadArray[numero] = str(int(cantidadArray[numero]) - 1)
         cantidad =','.join(cantidadArray)
-        os.system('echo {} > {}'.format(cantidad.strip(),pathConf.format("cantidad.txt")))
+        escribirJson("cantidad",cantidad)
     else:
         cantidadFriaArray[numero] = str(int(cantidadFriaArray[numero]) - 1)
         cantidad =','.join(cantidadFriaArray)
-        os.system('echo {} > {}'.format(cantidad.strip(),pathConf.format("cantidadFria.txt")))
+        escribirJson("cantidadFria",cantidad)
+
     context={
         'precioPizza' : precioPizza,
         'nombreDePizza' : nombreDePizza,
@@ -182,17 +187,17 @@ def pagina(metodoPago):
         'lenPizza':len(precioPizza),
         'subTotal' : subTotal,
         'monto' : monto,
-        'metodoPago' : int(metodoPago),
+        'metodoPago' : metodoPago,
         'codigoCredito' : codigoCredito
              }
-    
     return render_template('pago.html',**context)
 
 @app.route('/mandarAlPLC')
 def mandarPLC():
-    idCompra = leertxt("idCompra.txt")
-    tempPizza = leertxt("tempPizza.txt")
-    numero = leertxt("numeroPizza.txt")
+    idCompra = int(leerJson("idCompra"))
+    tempPizza = int(leerJson("tempPizza"))
+    numero = int(leerJson("numPizza"))
+
     print('python3 orden.py {} {} {} {}'.format(numero,1,tempPizza,idCompra))
     os.system('python orden.py {} {} {} {}'.format(numero,1,tempPizza, idCompra))
     return render_template('horneando.html')
@@ -202,56 +207,58 @@ def pizzaTerminada():
     while True:
         status = open(pathConf.format("status.txt"),mode='r')
         status = status.read()
-        tempPizza = leertxt("tempPizza.txt")
+        tempPizza = int(leerJson("tempPizza"))
         if status.strip() == "Pizza":
             if tempPizza:
-                cantidadArray = leerArray("cantidad.txt")
+                cantidadArray = leerJson("cantidad").split(',')
             else:
-                cantidadArray = leerArray("cantidadFria.txt")
-            i = 0
-            while int(cantidadArray[i]) == 0:
-                i +=1
-                if i == len(cantidadArray):
-                    if tempPizza:
-                        print("pizza frias!")
-                        os.system('echo {} > {}'.format(0,pathConf.format("tempPizza.txt")))
-                        return redirect(url_for('pizzaTerminada'))
-                    else:
-                        print('Lista la pizza')
-                        monto = leertxt("monto.txt")
-                        threadSQL = Thread(target=enviarBaseDatos, args=(monto,))
-                        threadSQL.start()
-                        codigoArray = leerArray("codigoCredito.txt")
-                        isCodigo = int(codigoArray[0])
-                        leerCodigo = pd.read_csv(pathOrden.format('codigoCredito.csv'))
-                        codigo = leerCodigo.loc[int(codigoArray[1]),'codigo']
-                        if isCodigo:
-                            for index,row in leerCodigo.iterrows():
-                                if (codigo == row['codigo']):
-                                    leerCodigo = leerCodigo.drop(index).reset_index(drop=True)
-                                    leerCodigo.to_csv(pathOrden.format('codigoCredito.csv'),index=False)
+                cantidadArray = leerJson("cantidadFria").split(',')
+            print(leerJson("cantidad"))
+            i = sacarPizzas(cantidadArray)
+            if i == -1:
+                if tempPizza:
+                    print("pizza frias!")
+                    tempPizza = 0
+                    response = make_response(redirect(url_for('pizzaTerminada')))
+                    escribirJson("tempPizza",tempPizza)
+                    return response
+                else:
+                    print('Lista la pizza')
+                    monto = float(leerJson("monto"))
+                    threadSQL = Thread(target=enviarBaseDatos, args=(monto,))
+                    threadSQL.start()
+                    codigoArray = leerJson("codigoCredito").split(',')
+                    isCodigo = int(codigoArray[0])
+                    leerCodigo = pd.read_csv(pathOrden.format('codigoCredito.csv'))
+                    codigo = leerCodigo.loc[int(codigoArray[1]),'codigo']
+                    if isCodigo:
+                        for index,row in leerCodigo.iterrows():
+                            if (codigo == row['codigo']):
+                                leerCodigo = leerCodigo.drop(index).reset_index(drop=True)
+                                leerCodigo.to_csv(pathOrden.format('codigoCredito.csv'),index=False)
                             arrayString = '0,0'
-                            os.system('echo {} > {}'.format(arrayString,pathConf.format("codigoCredito.txt")))
+                            escribirJson("codigoCredito",arrayString)
                             print(leerCodigo)
-                        idCompra = leertxt('idCompra.txt')
-                        content = {
+                    idCompra = int(leerJson("idCompra"))
+                    content = {
                             'idCompra' : idCompra
-                        }
-                        return render_template('volver.html',**content)
-                        break
+                    }
+                    return render_template('volver.html',**content)
+                    break
             cantidadArray[i] = str(int(cantidadArray[i]) - 1)
             cantidad =','.join(cantidadArray)
-            print(cantidadArray)
-            os.system('echo {} > {}'.format(i,pathConf.format("numeroPizza.txt")))
+            print(i)
+            escribirJson("numPizza",i)
             if tempPizza:
-                os.system('echo {} > {}'.format(cantidad.strip(),pathConf.format("cantidad.txt")))
+                escribirJson("cantidad",cantidad)      
             else:
-                os.system('echo {} > {}'.format(cantidad.strip(),pathConf.format("cantidadFria.txt")))
+                escribirJson("cantidadFria",cantidad.strip())
+            time.sleep(1)
+            print(cantidad)
             return redirect(url_for('mandarPLC'))
         else:
             print(status)
             
-
 if __name__ == '__main__':
     os.environ['FLASK_DEBUG'] = 'development'
     app.run(debug=True)

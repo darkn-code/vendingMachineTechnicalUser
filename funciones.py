@@ -10,6 +10,7 @@ import string
 from datetime import datetime
 import random
 import string
+import json
 
 """"Comandos para el billetero y monedero """
 HABILITAR_MONEDERO = '0CFFFFFFFF'
@@ -58,17 +59,43 @@ def genearCodigo(monto,cantChar):
     }
     return pd.DataFrame(fila)
 
+def generarIDCompra():
+    try:
+        orden = pd.read_csv(pathOrden.format('orden.csv'))
+        idCompra = int(orden.loc[len(orden)-1,'IdCompra'])
+    except:
+        idCompra = -1  
+    return idCompra + 1
+
+
+
+def sacarPizzas(arrayPizza):
+    i = 0
+    while int(arrayPizza[i]) == 0:
+        i +=1
+        if i == len(arrayPizza):
+           return -1
+    return i 
+
+
 def leerArray(array):
     leer = open(pathConf.format(array),mode='r')
     arrayLeido = leer.read()
     leer.close()
     return arrayLeido.split(',')
 
-def leertxt(texto):
-    leer = open(pathConf.format(texto),mode='r')
-    textoleido = int(leer.read())
-    leer.close()
-    return textoleido
+def leerJson(idConf):
+    with open(pathConf.format('config.json'),'r') as f:
+        datos = json.load(f)
+    return datos[idConf]
+
+def escribirJson(idConf,data):
+    with open(pathConf.format('config.json'),'r') as f:
+        datos = json.load(f)
+        datos[idConf] = data
+        
+    with open(pathConf.format('config.json'),'w') as f:
+        json.dump(datos,f)
 
 def contando(array,pizza):
     contador = 0

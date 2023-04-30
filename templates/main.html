@@ -10,6 +10,9 @@
             <td ><strong>Cantidad</strong></td>
             <td ><strong>Cantidad Disponible</strong></td>
         </tr>
+    </table>
+    <div class="tablaGrande">
+    <table >
     {%for i in range(0, lenPizza-1)%}
         <table class="pizzasCuadro">
             <tr>
@@ -36,6 +39,7 @@
         </table>
     {%endfor%}
     </table>
+    </div>
     <p id="total" class="totalClass">?</p>
     <button class="compra" onclick="irPaginaP()">Continuar</button>
     <dialog id="modalPizza">

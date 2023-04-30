@@ -1,3 +1,8 @@
+html,body{
+  height: 100%;
+  overflow: hidden;
+  zoom: 1;
+}
 table {
     table-layout: fixed;
     width: 100%;
@@ -12,6 +17,11 @@ table {
     width: 100%;
     border-collapse: collapse;
     border: 3px solid blue;
+    
+  }
+  .tablaGrande{
+    overflow: auto;
+    height: 73vh;
   }
   .totalClass{
     font: 2em sans-serif;
@@ -101,9 +111,8 @@ table {
     height: 70px;
   }
   .imagenFondo{
-    display: flex;
-    width: 1280px;
-    height: 1024px;
+    width: 100%;
+    height: 100%;
   }
   .inputTeclado{
     width: 100%;
@@ -136,4 +145,8 @@ table {
   
   #root .simple-keyboard.myTheme1 + .simple-keyboard-preview {
     background: #1c4995;
+  }
+  .videoHorno{
+    width: 100%;
+    height: 80vh;
   }

@@ -6,6 +6,9 @@ var monto = 0;
 function update_values(){
   modalInicio.showModal();
   modalEfectivo.show();
+  document.addEventListener('gesturestart', function (e) {
+    e.preventDefault();
+});
   var intervalID = setInterval(cargarDatos,2000);
   function cargarDatos()
    {
@@ -42,7 +45,13 @@ function cerrarModal(){
   window.location.href = "/compraCancelada/"+monto.toString();
  }
  function ModalCanceladoInit(){
-  compraCancelada.showModal();
+  if (monto == 0){
+    window.location.href = "/";
+  }
+  else{
+    compraCancelada.showModal();
+  }
+  
  }
 
 

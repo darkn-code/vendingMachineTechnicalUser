@@ -8,6 +8,9 @@ var pizza = precioPizza.length -1;
 var acc = 0; 
 function verificarBotones()
 {
+    document.addEventListener('gesturestart', function (e) {
+        e.preventDefault();
+    });
     var data = $.get('/comprobarBotones');
     var tm = data.done
     (
@@ -68,9 +71,14 @@ function irPaginaEfectivo(metodopago) {
         alert('No escogio ninguna pizza!')
     }
     else{
-        $.get( "/enviarPeticion/"+ cantidaPizzasStr + '/'  + cantidaFriaPizzasStr + '/'  + acc );
-        setTimeout(() => console.log("Esperando"), 500);
-        window.location.href = "/mostarPagina/" + metodopago.toString();
+        document.cookie = "tempPizza=1"
+        document.cookie = "monto=" + acc  
+        document.cookie = "metodoPago=" + metodopago.toString();
+        document.cookie = "cantidad=" + cantidaPizzasStr;
+        document.cookie = "cantidadFria=" + cantidaFriaPizzasStr;
+        
+        $.get( "/enviarPeticion");
+        setTimeout(() =>window.location.href = "/mostarPagina", 500);       
     }
 }
 

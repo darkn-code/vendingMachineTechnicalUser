@@ -1,8 +1,15 @@
-<!DOCTYPE html>
-<html>
- <head><title>Pizza Nauta</title> 
-    <meta http-equiv="refresh" content="10;url=http://127.0.0.1:5000/" /> </head>
-    <body>
-	<h1>Pizza lista!..</h1>
-    </body>
-</html>
+{% extends 'base.html'  %}
+{% block head %}
+<meta http-equiv="refresh" content="10;url=http://127.0.0.1:5000/" /> 
+{% endblock %}
+{% block content %}
+    <h1>Pizza lista!..</h1>
+    <h2> 
+        Si necesita facturar sacale una foto con tu celular 
+        al siguiete codigo e ingresalo este direccion url:
+    </h2>
+    <h2>https://apliint.com/testing/pzFacturacion/index.php</h2>
+    <h2>ID Compra: {{ idCompra }}</h2>
+    <h2>Codigo Franquicia: 12345</h2>
+    <button class="" onclick="window.location.href = '/';">Volver al menu principal</button>
+{% endblock %}

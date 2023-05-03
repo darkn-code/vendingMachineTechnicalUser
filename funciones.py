@@ -5,6 +5,12 @@ import os
 import mysql.connector
 from mdbSerial import *
 from movimientosSQl import *
+import random
+import string
+from datetime import datetime
+import random
+import string
+import json
 
 """"Comandos para el billetero y monedero """
 HABILITAR_MONEDERO = '0CFFFFFFFF'
@@ -31,11 +37,45 @@ DISNPESAR_MONEDAS_10 = '0D15'
 
 """"Fin Comandos"""
 PORT = '/dev/ttyUSB0'
+sqlLastIDComand = '(SELECT MAX(movIdMovimiento) FROM movimientos)'
+
+
+chars = string.ascii_uppercase + string.ascii_lowercase + string.digits + "!@#$%^&*()"
 
 isRun = True
 monto_depositado = 0
 listaPizza = pd.read_csv('./csv/listaPrecio.csv')
+pathOrden = './csv/orden.csv'
 pathConf = './config/{}'
+
+def genearCodigo(monto,cantChar):
+    codigo = ''.join(random.choice(chars) for i in range(cantChar))
+    now = now = datetime.now()
+    fila = {
+        'codigo': [codigo],
+        'monto' : [monto],
+        "fecha" : [now.strftime("%d %m %y")],
+        "hora" : [now.strftime("%H:%M:%S")]
+    }
+    return pd.DataFrame(fila)
+
+def generarIDCompra():
+    try:
+        orden = pd.read_csv(pathOrden.format('orden.csv'))
+        idCompra = int(orden.loc[len(orden)-1,'IdCompra'])
+    except:
+        idCompra = -1  
+    return idCompra + 1
+
+
+
+def sacarPizzas(arrayPizza):
+    i = 0
+    while int(arrayPizza[i]) == 0:
+        i +=1
+        if i == len(arrayPizza):
+           return -1
+    return i 
 
 
 def leerArray(array):
@@ -44,11 +84,18 @@ def leerArray(array):
     leer.close()
     return arrayLeido.split(',')
 
-def leertxt(texto):
-    leer = open(pathConf.format(texto),mode='r')
-    textoleido = int(leer.read())
-    leer.close()
-    return textoleido
+def leerJson(idConf):
+    with open(pathConf.format('config.json'),'r') as f:
+        datos = json.load(f)
+    return datos[idConf]
+
+def escribirJson(idConf,data):
+    with open(pathConf.format('config.json'),'r') as f:
+        datos = json.load(f)
+        datos[idConf] = data
+        
+    with open(pathConf.format('config.json'),'w') as f:
+        json.dump(datos,f)
 
 def contando(array,pizza):
     contador = 0
@@ -82,6 +129,17 @@ def leer_cantidad_monedas(mdb):
     Cantidad_total = Cantidad_total_1*1 + Cantidad_total_5*5 + Cantidad_total_10*10
     print(Cantidad_total) 
 
+def buscarMontoID(lastId,orden):
+    ordenID = orden[(orden['IdCompra'] == lastId)]
+    return float(ordenID['Precio total'].sum())
+
+def cambiarID(lastId,idCompra,orden):
+    ordenLast = orden[orden['IdCompra'] == idCompra]
+    for index,row in ordenLast.iterrows():
+        orden.loc[index,'IdCompra'] = lastId
+    print(orden)
+    orden.to_csv(pathOrden,index=False)
+    
 
 def enviarBaseDatos(monto):
     mydb = mysql.connector.connect(
@@ -91,8 +149,20 @@ def enviarBaseDatos(monto):
             database = credenciales["database"]
             )
     mycursor = mydb.cursor()
+    lastId = verificarMovimiento(mycursor,sqlLastIDComand)
+    orden = pd.read_csv(pathOrden)
+    idCompra = int(orden.loc[len(orden)-1,'IdCompra']) - 1
+    print('{} {}'.format(idCompra,lastId))
+    if idCompra > lastId:
+        montoAnterior = buscarMontoID(idCompra,orden)
+        idMovimiento = efectuarMovimiento(mydb,montoAnterior)
+        enviarBaseDatos(monto)
+        return True
     idMovimiento = efectuarMovimiento(mydb,monto)
-    verificarMovimiento(mycursor,idMovimiento)
+    if idCompra < lastId:
+        cambiarID(lastId,idCompra,orden)
+    lastId = verificarMovimiento(mycursor,idMovimiento)
+    return True
 
 def cobrarMonto(monto):
     global isRun,monto_depositado 

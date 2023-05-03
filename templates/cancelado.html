@@ -1,0 +1,13 @@
+{% extends 'base.html'  %}
+{% block head %}
+<meta http-equiv="refresh" content="20;url=http://127.0.0.1:5000/" /> 
+{% endblock %}
+{% block content %}
+    <h1>Pizza Cancelada!..</h1>
+    {% if validarCodigo %}
+        <h2>Codigo:</h2>
+        <h3>{{ codigo }}</h3>
+        <h2>Por seguridad de clic en cerrar sesion</h2>
+    {% endif %}
+    <button class="" onclick="window.location.href = '/';">Cerrar Sesion</button>
+{% endblock %}

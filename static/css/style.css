@@ -16,10 +16,10 @@ table {
     table-layout: fixed;
     width: 100%;
     border-collapse: collapse;
-    border: 3px solid blue;
-    
+    border: 3px solid blue; 
   }
   .tablaGrande{
+    table-layout: fixed;
     overflow: auto;
     height: 73vh;
   }

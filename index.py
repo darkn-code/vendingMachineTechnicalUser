@@ -42,7 +42,7 @@ def cobrar():
     #monto_depositado = funciones.monto_depositado
     monto_depositado = 0
     monto = leerJson("monto")
-    codigoArray = leerJson("codigoCredito")
+    codigoArray = leerJson("codigoCredito").split(',')
     isCodigo = int(codigoArray[0])
     if isCodigo:
         leerCodigo = pd.read_csv(pathOrden.format('codigoCredito.csv'))
@@ -238,7 +238,7 @@ def pizzaTerminada():
                                 leerCodigo.to_csv(pathOrden.format('codigoCredito.csv'),index=False)
                             arrayString = '0,0'
                             escribirJson("codigoCredito",arrayString)
-                            print(leerCodigo)
+                        print(leerCodigo)
                     idCompra = int(leerJson("idCompra"))
                     content = {
                             'idCompra' : idCompra

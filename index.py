@@ -246,7 +246,7 @@ def pizzaTerminada():
                                 leerCodigo.to_csv(pathOrden.format('codigoCredito.csv'),index=False)
                             arrayString = '0,0'
                             escribirJson("codigoCredito",arrayString)
-                            print(leerCodigo)
+                        print(leerCodigo)
                     idCompra = int(leerJson("idCompra"))
                     content = {
                             'idCompra' : idCompra

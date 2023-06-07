@@ -91,7 +91,7 @@ def compraCancelada(monto):
 @app.route('/')
 def index():
     funciones.isRun = False
-    #cerrarComunicacion()
+    cerrarComunicacion()
     response = make_response(render_template('index.html'))
     cookies = request.cookies
     for cookie in cookies:

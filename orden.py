@@ -65,7 +65,7 @@ def main():
             }
     orden = pd.concat([orden, pd.DataFrame(nuevo_orden)], ignore_index=True)
     orden.to_csv('./csv/orden.csv',index=False)
-    #print(os.system(conexionWin+'echo "Orden Enviado">Recibido.txt"'))
+    print(os.system(conexionWin+'echo "Orden Enviado">Recibido.txt"'))
     print(orden.tail(5))
 
 if __name__ == '__main__':

@@ -2,38 +2,46 @@
 {% block onload %}update_values(){% endblock %}
 {% block content %}
     <script src="../static/js/update.js" type="text/javascript" metodoPago="{{ metodoPago}}"></script> 
-    <h1><strong>Resumen de la compra </strong></h1>
-    <table>
-        <tr>
+    <div class="bg-sist-canc">
+			<div class="rec1"></div>
+			<div class="head">
+				<img src="../static/imagen/pizza-dr.png" class="img-piz">
+					<h1 class="title-pg">RESUMEN DE LA COMPRA </h1>
+				<img src="../static/imagen/LOGO-pizzanauta.png" class="img-logpiz">
+			</div>
+    <table class="pizzasCuadro">
+        <thead>
             <td ><strong>Pizzas</strong></td>
             <td ><strong>Precio (MXN)</strong></td>
             <td ><strong>Cantidad</strong></td>
             <td ><strong>SubTotal (MXN)</strong></td>
-        </tr>
+        </thead>
+        <tbody>
         {%for i in range(0, lenPizza)%}
-        <tr>
-            <td><span>{{nombreDePizza[i]}}</span></td>
-            <td><span>{{precioPizza[i]}}</span></td>
-            <td><span>{{cantidadPizza[i]}}</span></td>
-            <td><span>{{subTotal[i]}}</span></td>
-        </tr>
+            <tr class="fil1">
+                <td><span>{{nombreDePizza[i]}}</span></td>
+                <td><span>{{precioPizza[i]}}</span></td>
+                <td><span>{{cantidadPizza[i]}}</span></td>
+                <td><span>{{subTotal[i]}}</span></td>
+            </tr>
         {%endfor%}
+        </tbody>
     </table>
-    <dialog id="modalEfectivo">
+    <dialog class="bg-sist-canc" id="modalEfectivo">
         {% if metodoPago %}
             {% if codigoCredito %}
                 <p class="totalClass">
-                    <h1 class="centrado">Ingresa tu código de crédito</h1>
-                    <h2>Si en caso de que tu importe total sea mayor que el importe del código de crédito, deberás depositar la diferencia únicamente en EFECTIVO.</h2>
+                    <span class="centrado">Ingresa tu código de crédito</span>
+                    <span>Si en caso de que tu importe total sea mayor que el importe del código de crédito, deberás depositar la diferencia únicamente en EFECTIVO.</span>
                 </p>
                 <p class="totalClass">
                     <label class="codigoLabel" id="codigoLabel">Si cuenta con un Codigo Credito, ingresalo aqui:</label>
                     <input class="codigo" type="text" onclick="tecladoModal()" id="codigo" autocomplete="off"/>        
                 </p>
             {% else%}
-                <p class="totalClass">
-                    <h1 class="centrado">Ya puedes ingresar tu efectivo</h1>
-                </p>
+            <p class="totalClass">
+                <span class="centrado">Ya puedes ingresar tu efectivo</span>
+            </p>
             {% endif %}
         {% endif %}
         <dialog id="teclado">
@@ -41,26 +49,33 @@
             <input id="inputTeclado" class="inputTeclado" placeholder="Escriba su codigo credito" autocomplete="off"/>
             <div class="simple-keyboard"></div>
         </dialog>
-        <p class="totalClass">
-            <span id="total" class="">Total: {{monto}} MXN</span>
-        </p>
-        {% if metodoPago %}
+        <div>
             <p class="totalClass">
-                <span class="pago">?</span>
+                <span id="total" class="">Total: {{monto}} MXN</span>
             </p>
-            <p class="totalClass">
-                <span class="falta_pago">?</span>
-            </p>
-        {% else %}
+            {% if metodoPago %}
+                <p class="totalClass">
+                    <span class="pago">?</span>
+                </p>
+                <p class="totalClass">
+                    <span class="falta_pago">?</span>
+                </p>
+            {% else %}
+
+        </div>
         <button class="compra">Continuar</button>
         {% endif %}
-        <button class="compra" onclick="window.location.href = '/main';">Regresar</button>
-        <button class="compra" onclick="ModalCanceladoInit()">Cancelar Compra</button>
+        <div>
+            <button class="compra" onclick="window.location.href = '/main';">Regresar</button>
+            <button class="compra" onclick="ModalCanceladoInit()">Cancelar Compra</button>
+        </div>
+
         {% if metodoPago %}
-            <h2>Importante: No se acepta billetes de $500 ni monedas 10cts, 50cts y 20 pesos.</h2>
+            <span class="totalClass">Importante: No se acepta billetes de $500 ni monedas 10cts, 50cts y 20 pesos.</span>
         {% else %}
-            <h2>Importante: Presione Continuar para seguir con el pago en la terminal</h2>
+            <span class="totalClass">Importante: Presione Continuar para seguir con el pago en la terminal</span>
         {% endif %}
+    </div>
     </dialog>
     <dialog id="modalInicio">
         {% if metodoPago %}

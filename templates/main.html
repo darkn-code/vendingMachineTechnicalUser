@@ -1,61 +1,73 @@
 {% extends 'base.html'  %}
 {% block onload %}verificarBotones(){% endblock %}
 {% block content %}
-    <h1><strong>Escoge tu pizza:</strong> </h1>
-    <table>
-        <tr>
+  <div class="bg-sist">
+    <div class="rec2"></div>
+    <div class="head">
+        <img src="../static/imagen/pizza-dr.png" class="img-piz">
+        <h1 class="title-pg">SELECCIONA TU PIZZA</h1>
+        <img src="../static/imagen/LOGO-pizzanauta.png" class="img-logpiz">
+    </div>
+
+    <table class="encabezado">
+        <thead>
             <td></td>
             <td ><strong>Pizzas</strong></td>
             <td ><strong>Precio (MXN)</strong></td>
             <td ><strong>Cantidad</strong></td>
             <td ><strong>Cantidad Disponible</strong></td>
-        </tr>
+        </thead>
     </table>
+    
     <div class="tablaGrande">
-    <table >
-    {%for i in range(0, lenPizza-1)%}
+        
         <table class="pizzasCuadro">
-            <tr>
-                <td><img src="../static/imagen/pizza.png" class="pizzaImg" alt="Figura"></td>
-                <td><span>{{nombreDePizza[i]}} Lista para comer</span></td>
-                <td><span>{{precioPizza[i]}}</span></td>
-                <td><span>
-                    <button onclick="decrementar('{{i}}')">-</button>
-                    <input type="number" id="cantidad{{i}}" value="0" min="0">
-                    <button onclick="incrementar('{{i}}')">+</button>
-                </span></td>
-            </tr>
-            <tr>
-                <td><img src="../static/imagen/pizza.png" class="pizzaImg" alt="Figura"></td>
-                <td><span>{{nombreDePizza[i]}} Sin Hornear!</span></td>
-                <td><span>{{precioPizzaFria[i]}}</span></td>
-                <td><span>
-                    <button onclick="decrementarFrio('{{i}}')">-</button>
-                    <input type="number" id="cantidadFria{{i}}" value="0" min="0">
-                    <button onclick="incrementarFrio('{{i}}')">+</button>
-                </span></td>
-                <td><span class="baseDatos{{i}}">?</span></td>
-            </tr>
+            <tbody>
+            {%for i in range(0, lenPizza-1)%}
+                <tr class="fil1">
+                    <td><img src="../static/imagen/pizza{{i}}.png" class="pizzaImg" alt="Figura"></td>
+                    <td class="leftx2"><span class="shop-icon"></span> <span>{{nombreDePizza[i]}} Lista para comer</span> <br><br><br> <span class="shop-icon"></span> <span>{{nombreDePizza[i]}} lista para cocinar en casa</span></td>
+                    <td class=" "><span>{{precioPizza[i]}}</span> <br><br><br><br><span>{{precioPizzaFria[i]}}</span></td>
+                    <td><span class="btplus">
+                        <button onclick="decrementar('{{i}}')" class="bot5">-</button>
+                        <input type="number" id="cantidad{{i}}" value="0" min="0" class="bot5">
+                        <button onclick="incrementar('{{i}}')" class="bot5">+</button>
+                        </span>
+                        <br><br>
+                        <span class="btplus">
+                        <button onclick="decrementarFrio('{{i}}')" class="bot5">-</button>
+                        <input type="number" id="cantidadFria{{i}}" value="0" min="0" class="bot5">
+                        <button onclick="incrementarFrio('{{i}}')" class="bot5">+</button>
+                        </span>
+                    </td>
+                    <td><span class="baseDatos{{i}}">?</span></td>
+                </tr>
+            {%endfor%}
+            </tbody>
         </table>
-    {%endfor%}
-    </table>
     </div>
-    <p id="total" class="totalClass">?</p>
-    <button class="compra" onclick="irPaginaP()">Continuar</button>
+    <div class="head">
+        <button class="compra" onclick="irPaginaP()">Continuar <span class="button-icon"></span></button>
+        <p id="total" class="totalClass">?</p>
+    </div>
+    
     <dialog id="modalPizza">
-        <h2>No escogiste pizza</h2>
-        <button onclick="cancelarPedido()">Acpetar</button>
+        <div class="modcentr">
+            <h2>No escogiste pizza</h2>
+            <button onclick="cancelarPedido()" class="bcompra1">Aceptar</button>
+        </div>
     </dialog>
     <dialog id="modal">
-        <h2>Seleciona su metodo de pago:</h2>
-        <div class="centrado">
-            <button onclick="irPaginaEfectivo(1)" class="centrado">Efectivo</button>
-            <button onclick="irPaginaEfectivo(2)" class="centrado">Codigo Credito</button>
-            <button onclick="irPaginaEfectivo(0)" class="centrado">Tarjeta</button>
-        </div>
-        <div class="centrado">
-            <button onclick="cancelarPedido()" class="centrado">Regresar</button>
+
+        <div class="modcentr">
+            <h2>Seleciona su metodo de pago:</h2>
+            <button onclick="irPaginaEfectivo(1)" class="bcompra1">Efectivo</button>
+            <button onclick="irPaginaEfectivo(0)" class="bcompra1">Tarjeta</button>
+            <button onclick="irPaginaEfectivo(2)" class="bcompra1">Codigo Credito</button>
+        <br> <br>
+            <button onclick="cancelarPedido()" class="bcompra">Regresar</button>
         </div>
     </dialog>
+  </div>
     <script src="../static/js/verificarbotones.js" array="{{ precioPizza.to_numpy().tolist() }}" arrayFrio="{{ precioPizzaFria.to_numpy().tolist() }}" ></script>
 {% endblock %}

@@ -164,6 +164,20 @@ def enviarBaseDatos(monto):
     lastId = verificarMovimiento(mycursor,idMovimiento)
     return True
 
+def cerrarComunicacion():
+    time.sleep(1)
+    try:
+        mdb = mdbSerial(PORT)
+    except:
+        mdb = mdbSerial('/dev/ttyUSB5')
+    mdb.enviarDatos(RESETEAR_BILLETERO)
+    time.sleep(0.1)
+    mdb.enviarDatos(DESHANILITAR_MONEDERO)
+    time.sleep(0.1)
+    mdb.mdbSerial.close()
+    os.system('python3 verificarMonedero.py')
+    
+
 def cobrarMonto(monto):
     global isRun,monto_depositado 
     isRun = True

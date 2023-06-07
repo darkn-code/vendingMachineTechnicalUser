@@ -1,0 +1,597 @@
+@charset "UTF-8";
+/* CSS Document */
+
+
+/* Bienvenido 1 */
+body { 
+background: #FFFFFF;
+position: relative;
+width: 1280px;
+height: auto;
+left: 0px;
+top: 0px;
+overflow: hidden;
+margin: 0;
+}
+
+button {
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 36px;
+text-align: center;
+text-transform: uppercase;
+}
+
+.bienvenida{
+position: absolute;
+width: 1280px;
+height: 1024px;
+background-image: url("../imagen/bienvenido-1.jpg");
+background-repeat: no-repeat;
+background-position: center;
+left: 0px;
+top: 0px;
+}
+
+.error4{
+position: absolute;
+width: 1280px;
+height: 1024px;
+background-image: url("../imagen/error404.jpg");
+background-repeat: no-repeat;
+background-position: center;
+left: 0px;
+top: 0px;
+}
+
+.volver{
+position: absolute;
+width: 1280px;
+height: 1024px;
+background-image: url("../imagen/frame-6.jpg");
+background-repeat: no-repeat;
+background-position: center;
+left: 0px;
+top: 0px;
+}
+
+.h1 {
+font-style: normal;
+font-weight: 500;
+line-height: 45px;
+font-family: 'Mohave';
+}
+
+#title {
+position: absolute;
+width: 503.56px;
+height: 93.22px;
+left: 140px;
+top: 86px;
+color: #ffffff;
+text-align: center;
+font-family: 'Mohave';
+font-weight:  normal;
+font-size: 90px;
+}
+
+#bt1 {
+position: absolute;
+width: 466.4px;
+height: 88px;
+left: 160px;
+top: 297px;
+background: #F9C85A;
+border: solid #F9C85A;
+border-radius: 50px;
+}
+
+/* Rectangle 2 */
+
+.rec1 {
+position: absolute;
+width: 100%;
+height: 26px;
+left: 0px;
+top: 1021px;
+background: #F9C85A;
+}
+
+.rec2 {
+position: absolute;
+width: 100%;
+height: 26px;
+left: 0px;
+top: 1505px;
+background: #F9C85A;
+}
+
+.log1 {
+position: absolute;
+width: 425px;
+height: 425px;
+left: 781px;
+top: 85px;
+}
+
+/* main bg*/
+
+.bg-sist {
+width: 1280px;
+height: 1530px;
+background-color: #000000;
+}
+
+.bg-sist-canc {
+width: 1280px;
+height: 1024px;
+background-color: #000000;
+}
+
+/* head main */
+
+.head {
+position: absolute;
+width: 1106px;
+height: 81px;
+left: 75px;
+top: 34px;
+}
+
+.img-piz {
+position: absolute;
+left: 0.9%;
+right: 87.64%;
+top: 3.33%;
+bottom: 88.74%;
+}
+
+.title-pg {
+position: absolute;
+height: 39px;
+left: 130px;
+top: 0px;
+font-family: 'Mohave';
+font-style: normal;
+font-weight: 500;
+font-size: 32px;
+line-height: 45px;
+color: #ffffff;
+}
+
+.title-pg2{
+position: absolute;
+left: 376px;
+top: 70px;
+font-family: 'Mohave';
+font-style: normal;
+font-weight: 500;
+font-size: 52px;
+line-height: 45px;
+color: #ffffff;
+}
+
+.btn-pg2{
+position: absolute;
+width: 406px;
+height: 60px;
+left: 466px;
+top: 420px;
+}
+
+.img-logpiz {
+position: absolute;
+width: 100px;
+height: 75.59px;
+left: 1024px;
+top: 0px;
+}
+
+.img-logpiz2 {
+position: absolute;
+width: 283px;
+height: 283px;
+left: 40px;
+top: 45px;
+}
+
+.tb-1 {
+position: absolute;
+width: 1134px;
+height: 29px;
+left: 75px;
+top: 150px;
+color: #FFFFFF;
+font-family: "Poppins";
+padding: 0;
+}
+
+/* Pedido pizzas */
+
+table {
+  width: 1134px;
+  height: auto;
+  text-align: center;
+  position: absolute;
+  text-indent: initial;
+  border-spacing: 0px 40px;
+  border-collapse: separate;
+  font-size: 15px;
+  }
+
+.pizzasCuadro {
+  left: 75px;
+  top: 100px;
+  font-family: Poppins;
+  table-layout: fixed;
+  overflow: auto;
+  height: 73vh;
+ }
+
+.fil1 {
+    background: #ffffff;
+	border: 5px solid red;
+	border-radius: 25px;
+}
+
+thead {
+	color: #ffffff;
+}
+
+
+thead th:nth-child(1) {
+    width: 30%;
+
+  }  
+  thead th:nth-child(2) {
+    width: 20%;
+  }
+  
+  thead th:nth-child(3) {
+    width: 15%;
+  }
+  
+  thead th:nth-child(4) {
+    width: 35%;
+  }
+  
+  th, td {
+    padding: 30px 15px;
+  } 
+
+  .pizzaImg {
+    width: 150px;
+    height: 150px;
+	margin-top: -35%;
+  }
+ 
+	.leftx2 {
+		text-align: left;
+	}
+
+.shop-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 30px;
+  height: 30px;
+  background-image: url("../imagen/shopactive.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+
+
+/* botón sumar */
+
+  input[type=number]::-webkit-outer-spin-button,
+  input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type=number]{
+    font: 1.2em sans-serif;
+    text-align: center;
+    appearance:textfield;
+    width: 1.2em;
+    height: 1.6em;
+  }
+
+.btplus {
+box-sizing: border-box;
+width: 128px;
+height: 42px;
+padding: 8px 10px;
+border: 1px solid #C4C4C4;
+border-radius: 22px;
+}
+
+.bot5 {
+	background-color: transparent;
+	border: none;		
+}
+
+/* total */
+
+.totalClass {
+    margin: 10px;
+	box-sizing: border-box;
+	position: absolute;
+	left: 945px;
+	top: 1300px;
+	border: 1px solid #F9C85A;
+	border-radius: 20px;
+	display: inline-block;
+	vertical-align: center;
+	font-family: 'Poppins';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 24px;
+	line-height: 36px;
+	text-align: center;
+	text-transform: uppercase;
+	color: #F9C85A;
+	padding: 25px 45px;
+  }
+
+/* botón compra */
+
+  .compra {
+	margin: 10px;
+	padding: 15px 45px;
+	position: absolute;
+	left: 570px;
+	top: 1300px;
+	background-color: #D9D9D9;
+	border: 1px solid #D9D9D9;
+	border-radius: 50px;
+    font-family: 'Poppins';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 24px;
+	line-height: 36px;
+	cursor: pointer;
+  }
+
+  .regreso {
+	margin: 10px;
+	padding: 15px 45px;
+	position: absolute;
+	left: 570px;
+	top: 1300px;
+	background-color: #D9D9D9;
+	border: 1px solid #D9D9D9;
+	border-radius: 20px;
+    font-family: 'Poppins';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 24px;
+	line-height: 36px;
+	cursor: pointer;
+  }
+
+.button-icon {
+  display: inline-block;
+  vertical-align: middle;
+  width: 40px;
+  height: 40px;
+  margin: 5px 0px 5px 13px;
+  background-image: url("../imagen/btnSend.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.compra:active {
+  background-color: #D9D9D9;
+}
+
+.compra:hover {
+  background-color: #D9D9D9;
+}
+
+/* modal compra */
+
+dialog {
+background: rgba(0, 0, 0, 0.8);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  transition: all .3s;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 36px;
+  text-align: center;
+}
+
+dialog:modal {
+    position: fixed;
+    user-select: text;
+    visibility: visible;
+    overflow: auto;
+}
+
+.modcentr {
+  position: absolute;
+  top: 10vh;
+  left: 25%;
+  height: 50vh;
+  width: 50vw;
+  padding: 30px;
+  background-color: #ffffff;
+}
+
+.modcentr1 {
+  position: absolute;
+  top: 10vh;
+  left: 7%;
+  width: 900px;
+  padding: 30px;
+  background-color: #ffffff;
+ font-size: 0.8em;
+}
+
+.modcentrini {
+  position: absolute;
+  top: 10vh;
+  left: 15%;
+  width: 70vw;
+  padding: 30px;
+  background-color: #ffffff;
+ font-size: 1em;
+}
+
+  .centrado{
+    align-items: center;
+    padding: 10px 25px;
+  }
+
+
+  .bcompra {
+	margin: 10px;
+	padding: 15px 45px;
+	background-color: #D9D9D9;
+	border: 1px solid #D9D9D9;
+	border-radius: 50px;
+    font-family: 'Poppins';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 24px;
+	line-height: 36px;
+	cursor: pointer;
+  }
+
+ .bcompra1 {
+	margin: 10px;
+	padding: 15px 45px;
+	background-color: #F9C85A;
+	border: 1px solid #F9C85A;
+	border-radius: 50px;
+    font-family: 'Poppins';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 24px;
+	line-height: 36px;
+	cursor: pointer;
+  }
+
+.resl {
+	color: red;
+}
+
+.incodcred {
+  border-radius: 15px;
+  border: 1px solid #999999;
+  font-size: 20px;
+  padding: 10px;
+}
+
+	/* running-astronaut 1 */
+
+.img-gif {
+position: absolute;
+width: 240px;
+left: 0px;
+top: 46px;
+z-index: 999;
+}
+
+.title-es {
+position: absolute;
+width: 604px;
+height: 60px;
+left: 245px;
+top: 104px;
+font-family: 'Mohave';
+font-style: normal;
+font-weight: 500;
+font-size: 48px;
+line-height: 67px;
+color: #FFFFFF;
+}
+
+.img-logp-2{
+position: absolute;
+width: 150px;
+left: 990px;
+top: 104px;
+}
+
+.box-video {
+margin:auto;
+width: 1081px;
+height: 600px;
+padding-top:26%; 
+position:relative;
+}
+
+.text-gen {
+    color: #ffffff;
+	font-family: 'Poppins';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 20px;
+	text-align: left;
+	position: absolute;
+	left: 460px;
+	top: 200px;
+}
+
+.text-canc {
+	color: #000000;
+	font-family: 'Mohave';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 48px;
+	line-height: 67px;
+	text-align: center;
+}
+
+.text-canc1 {
+	color: #000000;
+	font-family: 'Poppins';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 24px;
+	line-height: 38px;
+	text-align: center;
+}
+
+.bcancel {
+    position: absolute;
+    width: 700px;
+	height: 400px;
+    background-color: #ffffff;
+	top: 250px;
+	left: 300px;
+	background-size: contain;
+}
+
+.bcancel1{
+	position: absolute;
+	top: 70px;
+	left: 200px;
+}
+
+
+.reds{
+	position: absolute;
+	left: 175px;
+	top: 670px;
+	color: #ffffff;
+	font-family: 'Poppins';
+	font-style: normal;
+	font-weight: 700;
+}
+
+.lefim {
+		position: absolute;
+		left: 140px;
+		top: 470px;
+}

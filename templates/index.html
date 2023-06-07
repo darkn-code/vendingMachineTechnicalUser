@@ -1,5 +1,11 @@
 {% extends 'base.html'  %}
 {% block content %}
-   <!--  <h1><strong>Bienvenidos a Pizza Nauta!!!</strong> </h1> -->
-    <img src="../static/imagen/background.png" class="imagenFondo" onclick='window.location.href = "/main";'/>
+	<div class="bienvenida">
+		<div class="rec1"></div>
+        <h1 id="title">¡BIENVENIDOS!</h1>
+        <button onclick='window.location.href="/main";' id="bt1">Presiona para comenzar</button>
+		<div class="log1">
+			<img src="../static/imagen/pizzanauta-logo.png" onclick='window.location.href="/main";'  alt="Pizzanauta">
+		</div>
+	</div>
 {% endblock %}

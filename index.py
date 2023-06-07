@@ -39,10 +39,10 @@ def verificarCodigo(codigo):
 @app.route('/data',methods=['GET'])
 def cobrar():
     global numeroPizza
-    #monto_depositado = funciones.monto_depositado
-    monto_depositado = 0
+    monto_depositado = funciones.monto_depositado
+    #monto_depositado = 100
     monto = leerJson("monto")
-    codigoArray = leerJson("codigoCredito")
+    codigoArray = leerJson("codigoCredito").split(',')
     isCodigo = int(codigoArray[0])
     if isCodigo:
         leerCodigo = pd.read_csv(pathOrden.format('codigoCredito.csv'))
@@ -57,7 +57,7 @@ def cobrar():
 
 @app.route('/comprobarBotones',methods=['GET'])
 def comprobar():
-    #os.system(conexionWin.format('csv/baseDatos.csv'))
+    os.system(conexionWin.format('csv/baseDatos.csv'))
     base = crearArray()
     response = make_response(json.dumps(base))
     response.content_type = 'application/json'
@@ -66,6 +66,9 @@ def comprobar():
 
 @app.route('/compraCancelada/<monto>')
 def compraCancelada(monto):
+    funciones.isRun = False
+    #cerrarComunicacion()
+    escribirJson("codigoCredito",'0,0')
     if monto == '0':
         validarCodigo = 0
         codigo = '' 
@@ -87,6 +90,8 @@ def compraCancelada(monto):
 
 @app.route('/')
 def index():
+    funciones.isRun = False
+    #cerrarComunicacion()
     response = make_response(render_template('index.html'))
     cookies = request.cookies
     for cookie in cookies:
@@ -95,10 +100,10 @@ def index():
 
 @app.route('/main')
 def main():
-    #os.system(conexionWin.format('csv/baseDatos.csv'))
-    #os.system(conexionWin.format('csv/listaPrecio.csv'))
+    os.system(conexionWin.format('csv/baseDatos.csv'))
+    os.system(conexionWin.format('csv/listaPrecio.csv'))
     funciones.isRun = False
-    #os.system("echo '1-1.4' | sudo tee /sys/bus/usb/drivers/usb/unbind")
+    os.system("echo '1-1.4' | sudo tee /sys/bus/usb/drivers/usb/unbind")
     contadorArray = crearArray()
    
     context={'precioPizza':listaPizza['precio'],
@@ -116,8 +121,10 @@ def enviarPeticion():
     cantidad = request.cookies.get("cantidad")
     cantidadFria = request.cookies.get("cantidadFria")
     monto = request.cookies.get("monto")
-    #thread = Thread(target=cobrarMonto, args=(int(monto),))
-    #thread.start()
+    print(cantidad)
+    print(monto)
+    thread = Thread(target=cobrarMonto, args=(int(monto),))
+    thread.start()
     tempPizza = request.cookies.get("tempPizza")
     cantidadArray = cantidad.split(',')
     numPizza = sacarPizzas(cantidadArray)
@@ -131,13 +138,13 @@ def enviarPeticion():
         
     idCompra = leerJson("idCompra")
     print('python3 orden.py {} {} {} {}'.format(numPizza,1,tempPizza,idCompra))
-    response = make_response([numPizza])
+    #response = make_response([numPizza])
     escribirJson("cantidad",cantidad)
     escribirJson("cantidadFria",cantidadFria)
     escribirJson("numPizza",numPizza)
     escribirJson("tempPizza",tempPizza)
     escribirJson("monto",int(monto))
-    return response
+    return monto
 
 @app.route('/mostarPagina')
 def pagina():
@@ -199,7 +206,7 @@ def mandarPLC():
     numero = int(leerJson("numPizza"))
 
     print('python3 orden.py {} {} {} {}'.format(numero,1,tempPizza,idCompra))
-    os.system('python orden.py {} {} {} {}'.format(numero,1,tempPizza, idCompra))
+    os.system('python3 orden.py {} {} {} {}'.format(numero,1,tempPizza, idCompra))
     return render_template('horneando.html')
 
 @app.route('/pizzaTerminada',methods=['GET'])
@@ -208,6 +215,7 @@ def pizzaTerminada():
         status = open(pathConf.format("status.txt"),mode='r')
         status = status.read()
         tempPizza = int(leerJson("tempPizza"))
+        print(status)
         if status.strip() == "Pizza":
             if tempPizza:
                 cantidadArray = leerJson("cantidad").split(',')

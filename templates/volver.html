@@ -3,13 +3,28 @@
 <meta http-equiv="refresh" content="10;url=http://127.0.0.1:5000/" /> 
 {% endblock %}
 {% block content %}
-    <h1>Pizza lista!..</h1>
-    <h2> 
-        Si necesita facturar sacale una foto con tu celular 
-        al siguiete codigo e ingresalo este direccion url:
-    </h2>
-    <h2>https://apliint.com/testing/pzFacturacion/index.php</h2>
-    <h2>ID Compra: {{ idCompra }}</h2>
-    <h2>Codigo Franquicia: 12345</h2>
-    <button class="" onclick="window.location.href = '/';">Volver al menu principal</button>
+    <div class="volver">
+			<div class="rec1"></div>
+			<div class="head">
+				<h1 class="title-pg2">¡TU PIZZA ESTA LISTA!</h1>
+				<img src="../static/imagen/pizzanauta-logo.png" class="img-logpiz2">
+			</div>
+			<div class="reds">
+				<h1>Síguenos</h1>
+			</div>
+			<div class="lefim"><img src="../static/imagen/redes.png"></div>
+			
+			<div class="text-gen">
+					<h4> Si necesita facturar sacale una foto con tu celular<br>
+						al siguiente código e ingresalo este direccion url:</h4>
+					<p>https://apliint.com/testing/pzFacturacion/index.php</p>
+					<h4>ID Compra: 47</h4>
+					<p>Codigo Franquicia: 12345</p>
+			</div>
+			
+			<div class="btn-pg2">
+			<button class="bcompra1" onclick="window.location.href = '/';">Volver al menu principal</button>
+			</div>
+    </div>
+
 {% endblock %}

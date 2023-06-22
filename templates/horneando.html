@@ -7,7 +7,11 @@
 			<div class="rec1"></div>
 			<div class="encabezado">
 				<img src="../static/imagen/running-astronaut.gif" class="img-gif">
-				<h1 class="title-es">TU PIZZA SE ESTA HORNEANDO...</h1>
+				{% if tempPizza %}
+					<h1 class="title-es">TU PIZZA SE ESTA HORNEANDO...</h1>
+				{% else %}
+					<h1 class="title-es">TU PIZZA ESTA CASI LISTA...</h1>
+				{% endif %}
 				<img src="../static/imagen/LOGO-pizzanauta.png" class="img-logpiz2">
 			</div>
             <video class="videoHorno" src="../static/videos/pizza.mp4" autoplay loop></video>

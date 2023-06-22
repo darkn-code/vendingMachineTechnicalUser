@@ -40,7 +40,7 @@ def verificarCodigo(codigo):
 def cobrar():
     global numeroPizza
     monto_depositado = funciones.monto_depositado
-    #monto_depositado = 100
+    #monto_depositado = 80
     monto = leerJson("monto")
     codigoArray = leerJson("codigoCredito").split(',')
     isCodigo = int(codigoArray[0])
@@ -207,7 +207,10 @@ def mandarPLC():
 
     print('python3 orden.py {} {} {} {}'.format(numero,1,tempPizza,idCompra))
     os.system('python3 orden.py {} {} {} {}'.format(numero,1,tempPizza, idCompra))
-    return render_template('horneando.html')
+    context = {
+            "tempPizza" : tempPizza
+            }
+    return render_template('horneando.html',**context)
 
 @app.route('/pizzaTerminada',methods=['GET'])
 def pizzaTerminada():

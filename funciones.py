@@ -38,7 +38,9 @@ DISNPESAR_MONEDAS_10 = '0D15'
 """"Fin Comandos"""
 PORT = '/dev/ttyUSB0'
 sqlLastIDComand = '(SELECT MAX(movIdMovimiento) FROM movimientos)'
-
+leerCredenciales = open("./config/credenciales.json",mode='r')
+credenciales = json.load(leerCredenciales)
+leerCredenciales.close()
 
 chars = string.ascii_uppercase + string.ascii_lowercase + string.digits + "!@#$%^&*()"
 
@@ -154,11 +156,11 @@ def enviarBaseDatos(monto):
     idCompra = int(orden.loc[len(orden)-1,'IdCompra']) - 1
     print('{} {}'.format(idCompra,lastId))
     if idCompra > lastId:
-        montoAnterior = buscarMontoID(idCompra,orden)
-        idMovimiento = efectuarMovimiento(mydb,montoAnterior)
+        #montoAnterior = buscarMontoID(idCompra,orden)
+        idMovimiento = efectuarMovimiento(mydb,idCompra)
         enviarBaseDatos(monto)
         return True
-    idMovimiento = efectuarMovimiento(mydb,monto)
+    idMovimiento = efectuarMovimiento(mydb,idCompra)
     if idCompra < lastId:
         cambiarID(lastId,idCompra,orden)
     lastId = verificarMovimiento(mycursor,idMovimiento)

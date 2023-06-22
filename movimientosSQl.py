@@ -2,7 +2,7 @@ import mysql.connector
 import time
 import datetime
 import json
-
+import pandas as pd
 columnasMovimiento = 'movIdMovimiento, movIdFranquicia, movIdMetodoPago, movIdTipoMovimiento, movFecha, movIdTipoFactura, movIdUsoCFDI, movIdOrdenCompra, movIdEmpleado, movIdProveedor, movIdCliente, movSubTotalImporte, movDescuentoImporte, movIvaImporte, movTotalImporte, movFacturado, movFacturaEnviada, movIdEstatus, movIdUsuarioCre, movIdUsuarioAct, movIdUsuarioEli'
 colMovDetalle = 'mdtIdMovimientoDetalle, mdtIdMovimiento, mdtIdConceptoDetalle, mdtTipoCambio, mdtCantidad, mdtImporte, mdtSubtotal, mdtDescuento, mdtIva, mdtObservaciones'
 
@@ -17,10 +17,18 @@ def crearValor(columna):
     valor = '%s, ' * num
     return valor[0:len(valor) - 2]
 
-def efectuarMovimiento(mydb,total):
+def efectuarMovimiento(mydb,id):
+    orden = pd.read_csv('./csv/orden.csv')
+    ordenId = orden[orden['IdCompra']==id]
+    ordenSubTotal = ordenId.groupby(['Descripcion'])['Precio total'].sum()
+    ordenCantidad = ordenId.groupby(['Descripcion'])['Descripcion'].count()
+
+    total = int(ordenSubTotal.sum())
+
+
     mycursor = mydb.cursor()
     ts = time.time()
-    monto = total / 1.16
+    monto = float(total / 1.16)
     iva = total - monto
     valorMovimiento = crearValor(columnasMovimiento)
     timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d')
@@ -32,12 +40,16 @@ def efectuarMovimiento(mydb,total):
 
     idMovimiento = mycursor.lastrowid
     valorMovimientoDetalle = crearValor(colMovDetalle)
-
-    sql = "INSERT INTO movimientosDetalle ({}) VALUES ({})".format(colMovDetalle,valorMovimientoDetalle)
-    val = (0, idMovimiento, 0, 0, 1, monto, monto, 0, iva, None)
-    mycursor.execute(sql, val)
-    mydb.commit()
-    
+    for index in ordenCantidad.index:
+        sql = "INSERT INTO movimientosDetalle ({}) VALUES ({})".format(colMovDetalle,valorMovimientoDetalle)
+        importe = float(ordenSubTotal[index] / ordenCantidad[index])
+        montoImporte = float(importe / 1.16)
+        monto = float(ordenSubTotal[index]  / 1.16)
+        iva = float(ordenSubTotal[index]  - monto)
+        val = (0, idMovimiento, 0, 0, int(ordenCantidad[index]), montoImporte , monto, 0, iva, None)
+        mycursor.execute(sql, val)
+        mydb.commit()
+        
     print(mycursor.rowcount, "record inserted.")
     return idMovimiento
 

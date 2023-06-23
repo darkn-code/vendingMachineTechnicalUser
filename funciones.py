@@ -35,6 +35,16 @@ DISNPESAR_MONEDAS_1 = '0D12'
 DISNPESAR_MONEDAS_5 = '0D14'
 DISNPESAR_MONEDAS_10 = '0D15'
 
+HABILITAR_NAYAX = '1401'
+DESHANILITAR_NAYAX = '1400'
+INICIADOR_VENTA = '10 03 13 88'
+SOLICITUD_VENTA = '1300{}0001'
+VENTA_APROVADA = '10 05 {}'
+VENTA_REALIZADA = '13020001'
+COMPLETAR_SESION = '1304'
+COMPRA_CANCELA = '10 06'
+
+
 """"Fin Comandos"""
 PORT = '/dev/ttyUSB0'
 sqlLastIDComand = '(SELECT MAX(movIdMovimiento) FROM movimientos)'
@@ -178,7 +188,46 @@ def cerrarComunicacion():
     time.sleep(0.1)
     mdb.mdbSerial.close()
     os.system('python3 verificarMonedero.py')
-    
+
+def cobrarTarjeta(monto):
+    global isRun,monto_depositado
+    monto_depositado = 0
+    try:
+        mdb = mdbSerial(PORT)
+    except:
+        mdb = mdbSerial('/dev/ttyUSB5')
+    hexMonto = format(monto * 10, 'x').zfill(4)
+    hexMontoEspaciado = ' '.join(hexMonto[i:i+2] for i in range(0, len(hexMonto), 2))
+    solicitud = SOLICITUD_VENTA.format(hexMonto)
+    recibirSolicitud = VENTA_APROVADA.format(hexMontoEspaciado)
+    mdb.enviarDatos(DESHANILITAR_NAYAX)
+    time.sleep(0.1)
+    mdb.enviarDatos(HABILITAR_NAYAX)
+    time.sleep(0.1)
+    nayax = mdb.recibirDatos()
+    nayax = nayax.decode('utf-8',errors='replace')
+    nayax = nayax.strip()
+
+    while not nayax==INICIADOR_VENTA:
+        nayax = mdb.recibirDatos()
+        nayax = nayax.decode('utf-8',errors='replace')
+        nayax = nayax.strip()
+        
+    mdb.enviarDatos(solicitud)
+
+    while not nayax == '10 07':
+        nayax = mdb.recibirDatos()
+        nayax = nayax.decode('utf-8',errors='replace')
+        nayax = nayax.strip()
+        if nayax == recibirSolicitud:
+            mdb.enviarDatos(VENTA_REALIZADA)
+            time.sleep(0.3)
+            mdb.enviarDatos(COMPLETAR_SESION)
+            monto_depositado = monto  
+        if nayax == COMPRA_CANCELA:
+            time.sleep(0.3)
+            mdb.enviarDatos(COMPLETAR_SESION)
+    mdb.mdbSerial.close()
 
 def cobrarMonto(monto):
     global isRun,monto_depositado 

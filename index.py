@@ -123,7 +123,13 @@ def enviarPeticion():
     monto = request.cookies.get("monto")
     print(cantidad)
     print(monto)
-    thread = Thread(target=cobrarMonto, args=(int(monto),))
+    metodoPago = int(request.cookies.get("metodoPago"))
+    if metodoPago == 1:#efectivo
+        thread = Thread(target=cobrarMonto, args=(int(monto),))
+    if metodoPago == 0:#tarjeta
+        thread = Thread(target=cobrarMonto, args=(int(monto),))
+    if metodoPago == 2:#codigo credito
+        thread = Thread(target=cobrarMonto, args=(int(monto),))
     thread.start()
     tempPizza = request.cookies.get("tempPizza")
     cantidadArray = cantidad.split(',')

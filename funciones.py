@@ -29,7 +29,8 @@ BILLETE_500 = '30 94 09'
 
 MONEDA_1 = '08 52'
 MONEDA_5 = '08 54'
-MONEDA_10 = '08 55'
+MONEDA_10 = '08 55' #45 agregar
+MONEDA_10_bolsa = '08 45'
 
 DISNPESAR_MONEDAS_1 = '0D12'
 DISNPESAR_MONEDAS_5 = '0D14'
@@ -37,7 +38,7 @@ DISNPESAR_MONEDAS_10 = '0D15'
 
 HABILITAR_NAYAX = '1401'
 DESHANILITAR_NAYAX = '1400'
-INICIADOR_VENTA = '10 03 13 88'
+INICIADOR_VENTA = '10 03 FD E8'
 SOLICITUD_VENTA = '1300{}0001'
 VENTA_APROVADA = '10 05 {}'
 VENTA_REALIZADA = '13020001'
@@ -153,7 +154,7 @@ def cambiarID(lastId,idCompra,orden):
     orden.to_csv(pathOrden,index=False)
     
 
-def enviarBaseDatos(monto):
+def enviarBaseDatos(monto,metodoPago):
     mydb = mysql.connector.connect(
             host= credenciales["host"],
             user = credenciales["user"],
@@ -167,10 +168,10 @@ def enviarBaseDatos(monto):
     print('{} {}'.format(idCompra,lastId))
     if idCompra > lastId:
         #montoAnterior = buscarMontoID(idCompra,orden)
-        idMovimiento = efectuarMovimiento(mydb,idCompra)
+        idMovimiento = efectuarMovimiento(mydb,idCompra,metodoPago)
         enviarBaseDatos(monto)
         return True
-    idMovimiento = efectuarMovimiento(mydb,idCompra)
+    idMovimiento = efectuarMovimiento(mydb,idCompra,metodoPago)
     if idCompra < lastId:
         cambiarID(lastId,idCompra,orden)
     lastId = verificarMovimiento(mycursor,idMovimiento)
@@ -186,6 +187,7 @@ def cerrarComunicacion():
     time.sleep(0.1)
     mdb.enviarDatos(DESHANILITAR_MONEDERO)
     time.sleep(0.1)
+    mdb.enviarDatos(DESHANILITAR_NAYAX)
     mdb.mdbSerial.close()
     os.system('python3 verificarMonedero.py')
 
@@ -200,6 +202,7 @@ def cobrarTarjeta(monto):
     hexMontoEspaciado = ' '.join(hexMonto[i:i+2] for i in range(0, len(hexMonto), 2))
     solicitud = SOLICITUD_VENTA.format(hexMonto)
     recibirSolicitud = VENTA_APROVADA.format(hexMontoEspaciado)
+    recibirSolicitud = recibirSolicitud.upper()
     mdb.enviarDatos(DESHANILITAR_NAYAX)
     time.sleep(0.1)
     mdb.enviarDatos(HABILITAR_NAYAX)
@@ -215,18 +218,21 @@ def cobrarTarjeta(monto):
         
     mdb.enviarDatos(solicitud)
 
-    while not nayax == '10 07':
+    while not nayax == recibirSolicitud:
         nayax = mdb.recibirDatos()
         nayax = nayax.decode('utf-8',errors='replace')
         nayax = nayax.strip()
-        if nayax == recibirSolicitud:
-            mdb.enviarDatos(VENTA_REALIZADA)
-            time.sleep(0.3)
-            mdb.enviarDatos(COMPLETAR_SESION)
-            monto_depositado = monto  
+        print(nayax)
+        print(recibirSolicitud)
         if nayax == COMPRA_CANCELA:
             time.sleep(0.3)
             mdb.enviarDatos(COMPLETAR_SESION)
+            break
+    time.sleep(1.0)
+    mdb.enviarDatos(VENTA_REALIZADA)
+    time.sleep(0.3)
+    mdb.enviarDatos(COMPLETAR_SESION)
+    monto_depositado = monto  
     mdb.mdbSerial.close()
 
 def cobrarMonto(monto):
@@ -259,6 +265,8 @@ def cobrarMonto(monto):
         if leerDinero[:5] == MONEDA_5:
             monto_depositado+=5
         if leerDinero[:5] == MONEDA_10:
+            monto_depositado+=10
+        if leerDinero[:5] == MONEDA_10_bolsa:
             monto_depositado+=10
         #Billetes
         if leerDinero == BILLETE_20:

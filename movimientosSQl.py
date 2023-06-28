@@ -17,7 +17,11 @@ def crearValor(columna):
     valor = '%s, ' * num
     return valor[0:len(valor) - 2]
 
-def efectuarMovimiento(mydb,id):
+def efectuarMovimiento(mydb,id,metodoPago):
+    if metodoPago == 1:
+        pago = 1
+    else:
+        pago = 4
     orden = pd.read_csv('./csv/orden.csv')
     ordenId = orden[orden['IdCompra']==id]
     ordenSubTotal = ordenId.groupby(['Descripcion'])['Precio total'].sum()
@@ -34,7 +38,7 @@ def efectuarMovimiento(mydb,id):
     timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d')
 
     sql = "INSERT INTO movimientos ({}) VALUES ({})".format(columnasMovimiento,valorMovimiento)
-    val = (0, 1, 6, 1, timestamp, 0,  0, None, None, None, 0, monto,0, iva, total, 0, 0, 1, 0 , None, None)
+    val = (0, 1, pago, 1, timestamp, 0,  0, None, None, None, 0, monto,0, iva, total, 0, 0, 1, 0 , None, None)#6 es metodo de pago: 1 efectivo/ 4 credito
     mycursor.execute(sql, val)
     mydb.commit()
 
@@ -71,5 +75,5 @@ if __name__ == '__main__':
             database = credenciales["database"]
             )
     mycursor = mydb.cursor()
-    idMovimiento = efectuarMovimiento(mydb,99.0)
+    idMovimiento = efectuarMovimiento(mydb,1)
     print(verificarMovimiento(mycursor,idMovimiento))

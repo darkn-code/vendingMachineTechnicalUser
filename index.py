@@ -127,7 +127,7 @@ def enviarPeticion():
     if metodoPago == 1:#efectivo
         thread = Thread(target=cobrarMonto, args=(int(monto),))
     if metodoPago == 0:#tarjeta
-        thread = Thread(target=cobrarMonto, args=(int(monto),))
+        thread = Thread(target=cobrarTarjeta, args=(int(monto),))
     if metodoPago == 2:#codigo credito
         thread = Thread(target=cobrarMonto, args=(int(monto),))
     thread.start()
@@ -177,6 +177,7 @@ def pagina():
              nombreDePizza.append(listaPizza['vacio'][i])
              cantidadPizza.append(cantidadArray[i])
              subTotal.append(int(listaPizza['precio'][i]) * int(cantidadArray[i]))
+        
         if int(cantidadFriaArray[i]) != 0:
              precioPizza.append(listaPizza['precioFria'][i])
              nombreDePizza.append(listaPizza['vacio'][i]+' Congelada')
@@ -242,7 +243,8 @@ def pizzaTerminada():
                 else:
                     print('Lista la pizza')
                     monto = float(leerJson("monto"))
-                    threadSQL = Thread(target=enviarBaseDatos, args=(monto,))
+                    metodoPago = int(request.cookies.get("metodoPago"))
+                    threadSQL = Thread(target=enviarBaseDatos, args=(monto,metodoPago,))
                     threadSQL.start()
                     codigoArray = leerJson("codigoCredito").split(',')
                     isCodigo = int(codigoArray[0])

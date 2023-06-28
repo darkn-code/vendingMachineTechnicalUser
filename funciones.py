@@ -30,7 +30,10 @@ BILLETE_500 = '30 94 09'
 MONEDA_1 = '08 52'
 MONEDA_5 = '08 54'
 MONEDA_10 = '08 55' #45 agregar
-MONEDA_10_bolsa = '08 45'
+
+MONEDA_1_BOLSA = '08 42'  
+MONEDA_5_BOLSA = '08 44'
+MONEDA_10_BOLSA = '08 45'
 
 DISNPESAR_MONEDAS_1 = '0D12'
 DISNPESAR_MONEDAS_5 = '0D14'
@@ -266,8 +269,14 @@ def cobrarMonto(monto):
             monto_depositado+=5
         if leerDinero[:5] == MONEDA_10:
             monto_depositado+=10
-        if leerDinero[:5] == MONEDA_10_bolsa:
+        
+        if leerDinero[:5] == MONEDA_1_BOLSA:
+            monto_depositado+=1
+        if leerDinero[:5] == MONEDA_5_BOLSA:
+            monto_depositado+=5
+        if leerDinero[:5] == MONEDA_10_BOLSA:
             monto_depositado+=10
+        
         #Billetes
         if leerDinero == BILLETE_20:
             mdb.enviarDatos(ACEPTAR_BILLETE)
@@ -296,13 +305,13 @@ def cobrarMonto(monto):
                 cantidad_1 = ((cambio % 10) % 5) // 1
                 for i in range(cantidad_10):
                     mdb.enviarDatos(DISNPESAR_MONEDAS_10)
-                    time.sleep(0.3)
+                    time.sleep(0.4)
                 for i in range(cantidad_5):
                     mdb.enviarDatos(DISNPESAR_MONEDAS_5)
-                    time.sleep(0.3)
+                    time.sleep(0.4)
                 for i in range(cantidad_1):
                     mdb.enviarDatos(DISNPESAR_MONEDAS_1)
-                    time.sleep(0.3)
+                    time.sleep(0.4)
             isRun = False
     time.sleep(1)
     mdb.enviarDatos(RESETEAR_BILLETERO)

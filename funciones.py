@@ -210,32 +210,25 @@ def cobrarTarjeta(monto):
     time.sleep(0.1)
     mdb.enviarDatos(HABILITAR_NAYAX)
     time.sleep(0.1)
-    nayax = mdb.recibirDatos()
-    nayax = nayax.decode('utf-8',errors='replace')
-    nayax = nayax.strip()
-
-    while not nayax==INICIADOR_VENTA:
-        nayax = mdb.recibirDatos()
-        nayax = nayax.decode('utf-8',errors='replace')
-        nayax = nayax.strip()
-        
-    mdb.enviarDatos(solicitud)
-
-    while not nayax == recibirSolicitud:
+    while isRun:
         nayax = mdb.recibirDatos()
         nayax = nayax.decode('utf-8',errors='replace')
         nayax = nayax.strip()
         print(nayax)
-        print(recibirSolicitud)
+        if nayax == INICIADOR_VENTA:
+            mdb.enviarDatos(solicitud)
+        #print(recibirSolicitud)
+        if nayax == recibirSolicitud:
+            time.sleep(1.0)
+            mdb.enviarDatos(VENTA_REALIZADA)
+            time.sleep(0.3)
+            mdb.enviarDatos(COMPLETAR_SESION)
+            monto_depositado = monto
+            break  
         if nayax == COMPRA_CANCELA:
             time.sleep(0.3)
             mdb.enviarDatos(COMPLETAR_SESION)
             break
-    time.sleep(1.0)
-    mdb.enviarDatos(VENTA_REALIZADA)
-    time.sleep(0.3)
-    mdb.enviarDatos(COMPLETAR_SESION)
-    monto_depositado = monto  
     mdb.mdbSerial.close()
 
 def cobrarMonto(monto):

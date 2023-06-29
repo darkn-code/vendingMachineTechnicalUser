@@ -102,6 +102,7 @@ def index():
 def main():
     os.system(conexionWin.format('csv/baseDatos.csv'))
     os.system(conexionWin.format('csv/listaPrecio.csv'))
+    listaPizza = pd.read_csv('./csv/listaPrecio.csv')
     funciones.isRun = False
     os.system("echo '1-1.4' | sudo tee /sys/bus/usb/drivers/usb/unbind")
     contadorArray = crearArray()

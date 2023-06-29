@@ -63,7 +63,7 @@ def verificarMovimiento(mycursor,idMovimiento):
     myresult = mycursor.fetchall()
     for x in myresult:
         print(x)
-    return myresult[0][0]
+    return myresult
 
 
 if __name__ == '__main__':
@@ -75,5 +75,5 @@ if __name__ == '__main__':
             database = credenciales["database"]
             )
     mycursor = mydb.cursor()
-    idMovimiento = efectuarMovimiento(mydb,1)
+    idMovimiento = efectuarMovimiento(mydb,0,0)
     print(verificarMovimiento(mycursor,idMovimiento))

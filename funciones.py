@@ -228,6 +228,7 @@ def cobrarTarjeta(monto):
         if nayax == COMPRA_CANCELA:
             time.sleep(0.3)
             mdb.enviarDatos(COMPLETAR_SESION)
+            monto_depositado = -1
             break
     mdb.mdbSerial.close()
 

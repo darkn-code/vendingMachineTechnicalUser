@@ -1,4 +1,7 @@
 {% extends 'base.html'  %}
+{% block head %}
+<meta http-equiv="refresh" content="300;url=http://127.0.0.1:5000/" /> 
+{% endblock %}
 {% block onload %}verificarBotones(){% endblock %}
 {% block content %}
   <div class="bg-sist">
@@ -62,7 +65,7 @@
         <div class="modcentr">
             <h2>Seleciona su metodo de pago:</h2>
             <button onclick="irPaginaEfectivo(1)" class="bcompra1">Efectivo</button>
-            <button onclick="irPaginaEfectivo(1)" class="bcompra1">Tarjeta</button>
+            <button onclick="irPaginaEfectivo(0)" class="bcompra1">Tarjeta</button>
             <button onclick="irPaginaEfectivo(2)" class="bcompra1">Codigo Credito</button>
         <br> <br>
             <button onclick="cancelarPedido()" class="bcompra">Regresar</button>

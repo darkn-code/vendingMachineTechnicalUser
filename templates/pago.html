@@ -38,7 +38,7 @@
                     <label class="codigoLabel" id="codigoLabel">Si cuenta con un Codigo Credito, ingresalo aqui:</label>
                     <input class="codigo" type="text" onclick="tecladoModal()" id="codigo" autocomplete="off"/>        
                 </p>
-            {% else%}
+            {% else %}
             <p class="totalClass">
                 <span class="centrado">Ya puedes ingresar tu efectivo</span>
             </p>
@@ -50,10 +50,11 @@
             <div class="simple-keyboard"></div>
         </dialog>
         <div>
-            <p class="totalClass">
-                <span id="total" class="">Total: {{monto}} MXN</span>
-            </p>
+            
             {% if metodoPago %}
+                <p class="totalClass">
+                    <span id="total" class="">Total: {{monto}} MXN</span>
+                </p>
                 <p class="totalClass">
                     <span class="pago">?</span>
                 </p>
@@ -61,9 +62,13 @@
                     <span class="falta_pago">?</span>
                 </p>
             {% else %}
-
+            <p class="text-total">
+                <span id="total" class="">Total: {{monto}} MXN</span>
+            </p>
+            <p>
+                <span class="total-text-credito">Importante: Presionar el boton verde de la terminal para pagar</span>
+            </p>
         </div>
-        <button class="compra">Continuar</button>
         {% endif %}
         <div>
             <button class="compra" onclick="window.location.href = '/main';">Regresar</button>
@@ -73,7 +78,7 @@
         {% if metodoPago %}
             <span class="totalClass">Importante: No se acepta billetes de $500 ni monedas 10cts, 50cts, 2 pesos y 20 pesos.</span>
         {% else %}
-            <span class="totalClass">Importante: Presione Continuar para seguir con el pago en la terminal</span>
+            <span class=""></span>
         {% endif %}
     </div>
     </dialog>

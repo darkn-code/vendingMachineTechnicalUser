@@ -25,6 +25,9 @@ function update_values(){
           $(".cambio").text(`Recoja su cambio ${result[0]-result[1]} MXN`); 
         }  
         setTimeout(() => window.location.href = "/mandarAlPLC", 4000);
+      }
+      if (result[0]==-1){
+        window.location.href = "/";
       } 
     })
    }

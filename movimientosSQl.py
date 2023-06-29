@@ -18,10 +18,10 @@ def crearValor(columna):
     return valor[0:len(valor) - 2]
 
 def efectuarMovimiento(mydb,id,metodoPago):
-    if metodoPago == 1:
-        pago = 1
-    else:
+    if metodoPago == 0:
         pago = 4
+    else:
+        pago = 1
     orden = pd.read_csv('./csv/orden.csv')
     ordenId = orden[orden['IdCompra']==id]
     ordenSubTotal = ordenId.groupby(['Descripcion'])['Precio total'].sum()

@@ -188,6 +188,8 @@ def cerrarComunicacion():
         mdb = mdbSerial('/dev/ttyUSB5')
     mdb.enviarDatos(RESETEAR_BILLETERO)
     time.sleep(0.1)
+    mdb.enviarDatos(COMPLETAR_SESION)
+    time.sleep(0.1)
     mdb.enviarDatos(DESHANILITAR_MONEDERO)
     time.sleep(0.1)
     mdb.enviarDatos(DESHANILITAR_NAYAX)
@@ -210,6 +212,7 @@ def cobrarTarjeta(monto):
     time.sleep(0.1)
     mdb.enviarDatos(HABILITAR_NAYAX)
     time.sleep(0.1)
+    isRun = True
     while isRun:
         nayax = mdb.recibirDatos()
         nayax = nayax.decode('utf-8',errors='replace')
@@ -228,8 +231,12 @@ def cobrarTarjeta(monto):
         if nayax == COMPRA_CANCELA:
             time.sleep(0.3)
             mdb.enviarDatos(COMPLETAR_SESION)
+            time.sleep(0.3)
+            mdb.enviarDatos(DESHANILITAR_NAYAX)
             monto_depositado = -1
             break
+    time.sleep(0.3)
+    mdb.enviarDatos(DESHANILITAR_NAYAX)
     mdb.mdbSerial.close()
 
 def cobrarMonto(monto):

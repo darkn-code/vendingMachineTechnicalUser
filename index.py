@@ -72,7 +72,11 @@ def compraCancelada(monto):
     if monto == '0':
         validarCodigo = 0
         codigo = '' 
-        return render_template('index.html')     
+        funciones.isRun = False
+        time.sleep(0.3)
+        #cerrarComunicacion()
+        print("compra cancelada por tarjeta")
+        return render_template('index.html')
     else:
         validarCodigo = 1
         codigoGenerado = genearCodigo(monto,7)

@@ -11,6 +11,7 @@ from datetime import datetime
 import random
 import string
 import json
+import pandas as pd
 
 """"Comandos para el billetero y monedero """
 HABILITAR_MONEDERO = '0CFFFFFFFF'
@@ -296,14 +297,29 @@ def cobrarMonto(monto):
             monto_depositado+=500
         print(leerDinero[:5]) 
         if (monto_depositado >= monto):
-            #leer_cantidad_monedas(mdb)
+            pdMonedas = pd.read_csv('./csv/cantidadMonedas.csv')
+            cambio_10 = int(pdMonedas.iloc[0]['Monedas 10'])
             cambio = monto_depositado - monto
             print('Cambio: '+str(cambio))
+            cantidad_1 = 0
+            cantidad_5 = 0
+            cantidad_10 = 0
             if (cambio != 0 ):
                 time.sleep(0.5)
-                cantidad_10 = cambio // 10
-                cantidad_5 = (cambio % 10) // 5
-                cantidad_1 = ((cambio % 10) % 5) // 1
+                if cambio >= 70:
+                    cantidad_5 = 14
+                    cambio = cambio - 70
+                elif cambio >= 50:
+                    cantidad_5 = 5
+                    cambio = cambio - 25
+                if cambio_10 > 15:
+                    cantidad_10 += cambio // 10
+                    resto_10 = cambio % 10
+                else: 
+                    resto_10 = cambio
+                cantidad_5 += resto_10 // 5
+                resto_5 = resto_10 % 5
+                cantidad_1 += resto_5 // 1
                 for i in range(cantidad_10):
                     mdb.enviarDatos(DISNPESAR_MONEDAS_10)
                     time.sleep(0.4)

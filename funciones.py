@@ -293,8 +293,8 @@ def cobrarMonto(monto):
             mdb.enviarDatos(ACEPTAR_BILLETE)
             monto_depositado+=200
         if leerDinero == BILLETE_500:
-            mdb.enviarDatos(ACEPTAR_BILLETE)
-            monto_depositado+=500
+            mdb.enviarDatos(RECHAZAR_BILLETE)
+            #monto_depositado+=500
         print(leerDinero[:5]) 
         if (monto_depositado >= monto):
             pdMonedas = pd.read_csv('./csv/cantidadMonedas.csv')

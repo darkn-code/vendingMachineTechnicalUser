@@ -9,6 +9,7 @@ import serial
 from mdbSerial import *
 from funciones import *
 import funciones
+from validacion import *
 
 conexionWin = 'scp tablet-vending@192.168.1.3:c:/proyecto-vending/{} ./csv/'
 listaPizza = pd.read_csv('./csv/listaPrecio.csv')
@@ -96,7 +97,15 @@ def compraCancelada(monto):
 def index():
     funciones.isRun = False
     cerrarComunicacion()
-    response = make_response(render_template('index.html'))
+    with open('./config/hash.json', 'r') as f:
+        hashPermitido = json.load(f)
+    numero_serie_actual = obtener_numero_serie()
+    clave_secreta = 'tX459D#NM%VnjWR'
+    hashActual = calcular_valor_hash(numero_serie_actual, clave_secreta)
+    if hashActual == hashPermitido:
+        response = make_response(render_template('index.html'))
+    else:
+        response = make_response(render_template('error.html'))
     cookies = request.cookies
     for cookie in cookies:
         response.delete_cookie(cookie)

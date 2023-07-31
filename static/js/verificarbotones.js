@@ -6,6 +6,12 @@ var total = document.getElementById("total");
 total.textContent = "Total: 0 MXN";
 var pizza = precioPizza.length -1;
 var acc = 0; 
+const imagenAgotado = $("<img>")
+imagenAgotado.attr("src", "../static/imagen/agotado_temporalmente.gif");
+imagenAgotado.addClass("imag-agotado")
+//imagenAgotado.attr("width", 220); 
+//imagenAgotado.attr("height", 80);
+
 function verificarBotones()
 {
     document.addEventListener('gesturestart', function (e) {
@@ -24,7 +30,12 @@ function verificarBotones()
                 input.max = result[i] - inputFrio.value;
                 inputFrio.max = result[i] - input.value;
                 $(".baseDatos"+i.toString()).text("");
-                $(".baseDatos"+i.toString()).text(result[i]);
+		if (result[i] ==0){
+		    $(".baseDatos"+i.toString()).append(imagenAgotado.clone())
+		}
+		else{
+                    $(".baseDatos"+i.toString()).text(result[i]);
+		}
             }
 
         }

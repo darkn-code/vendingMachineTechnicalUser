@@ -165,19 +165,21 @@ def enviarBaseDatos(monto,metodoPago):
             database = credenciales["database"]
             )
     mycursor = mydb.cursor()
-    lastId = verificarMovimiento(mycursor,sqlLastIDComand)
+    mycursor.execute("SELECT * FROM movimientos")
+    mybase = mycursor.fetchall()
+    lastId = int(mybase[len(mybase) - 1][0])
     orden = pd.read_csv(pathOrden)
     idCompra = int(orden.loc[len(orden)-1,'IdCompra']) - 1
     print('{} {}'.format(idCompra,lastId))
     if idCompra > lastId:
         #montoAnterior = buscarMontoID(idCompra,orden)
         idMovimiento = efectuarMovimiento(mydb,idCompra,metodoPago)
-        enviarBaseDatos(monto)
+        enviarBaseDatos(monto,metodoPago)
         return True
     idMovimiento = efectuarMovimiento(mydb,idCompra,metodoPago)
-    if idCompra < lastId:
-        cambiarID(lastId,idCompra,orden)
-    lastId = verificarMovimiento(mycursor,idMovimiento)
+    #if idCompra < lastId:
+        #cambiarID(lastId,idCompra,orden)
+    lastVer = verificarMovimiento(mycursor,idMovimiento)
     return True
 
 def cerrarComunicacion():

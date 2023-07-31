@@ -27,7 +27,7 @@ function update_values(){
         setTimeout(() => window.location.href = "/mandarAlPLC", 4000);
       }
       if (result[0]==-1){
-        window.location.href = "/";
+        window.location.href = "/compraCancelada/0";
       } 
     })
    }

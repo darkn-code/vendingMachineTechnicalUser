@@ -2,12 +2,13 @@ html,body{
   height: 100%;
   overflow: hidden;
   zoom: 1;
+  margin: 0;
 }
 table {
     table-layout: fixed;
     width: 100%;
     border-spacing: 0px 40px;
-    font-size: 15px;
+    font-size: 20px;
     border-collapse: separate;
   }
 .encabezado{
@@ -16,6 +17,11 @@ table {
   height: 81px;
   left: 75px;
   top: 34px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 25px;
+  line-height: 26px;
+  font-family: 'Mohave';
 }
 h1{
     font-style: normal;
@@ -126,9 +132,11 @@ color: #FFFFFF;
     background-color: #000000;
     }
 .bg-sist-canc {
-width: 1280px;
-height: 1024px;
-background-color: #000000;
+    height: 1024px;
+    background-color: #000000;
+}
+.bg-sist-canc1{
+    background-color: #000000;
 }
 .fil1 {
     background: #ffffff;
@@ -387,9 +395,8 @@ background-position: center;
 left: 0px;
 top: 0px;
 }
-.modcentr {
-  background-color: #ffffff;
-}
+
+
 .reds{
 	position: absolute;
 	left: 175px;
@@ -437,11 +444,11 @@ top: 0px;
 .bcancel {
   position: absolute;
   width: 700px;
-	height: 400px;
+  height: 400px;
   background-color: #ffffff;
-	top: 250px;
-	left: 300px;
-	background-size: contain;
+  top: 250px;
+  left: 300px;
+  background-size: contain;
 }
 .bcancel1{
 	position: absolute;
@@ -449,7 +456,7 @@ top: 0px;
 	left: 200px;
 }
 .button-cancel{
-  font-family: 'Poppins';
+        font-family: 'Poppins';
 	font-style: normal;
 	font-weight: 500;
 	font-size: 24px;
@@ -470,17 +477,70 @@ top: 0px;
     color: #F9C85A;
     padding: 25px 45px;
 }
-.total-text-credito{
+
+.pdr-cont{
+	height: 100vh;
+	min-height: 600px;
+}
+
+.container {
     border: 1px solid #F9C85A;
-    margin-left:250px ;
-    border-radius: 20px;
-    display: inline-block;
     font-family: 'Poppins';
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
     line-height: 36px;
+    text-align: center;
     text-transform: uppercase;
     color: #F9C85A;
+    position: absolute;
+    top: 10%;
+    left: 8%;
+    transform: translate(50% 50%);
+    max-width: 50%;
+}
+
+.total-text-credito{
+    border: 1px solid #F9C85A;
+    margin-left:250px ;
+    border-radius: 20px;
+    display: inline-block;
     padding: 25px 45px;
+}
+
+/* modal compra */
+
+dialog {
+  position: container;
+  transition: all .3s;
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 36px;
+  text-align: center;
+}
+
+dialog:modal {
+    user-select: text;
+    visibility: visible;
+    overflow: auto;
+}
+
+dialog::backdrop {
+    position: fixed;
+    inset: 0px;
+    background: rgba(0, 0, 0, 0.5);
+}
+.modcentr {
+  background-color: #ffffff;
+  padding: 5% 0;
+}
+.imag-nayax{
+  width: 200px;
+  height: 200px;  
+}
+.imag-agotado{
+  width:220px;
+  height:50px;  
 }

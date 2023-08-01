@@ -67,6 +67,7 @@ def comprobar():
 @app.route('/compraCancelada/<monto>')
 def compraCancelada(monto):
     funciones.isRun = False
+    #funciones.monto_depositado = -2
     #cerrarComunicacion()
     escribirJson("codigoCredito",'0,0')
     if monto == '0':

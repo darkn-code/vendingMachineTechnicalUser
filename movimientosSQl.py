@@ -75,5 +75,6 @@ if __name__ == '__main__':
             database = credenciales["database"]
             )
     mycursor = mydb.cursor()
-    idMovimiento = efectuarMovimiento(mydb,1,0)
+    idMovimiento = mycursor.lastrowid
+    #idMovimiento = efectuarMovimiento(mydb,1,0)
     print(verificarMovimiento(mycursor,idMovimiento))

@@ -1,6 +1,7 @@
 var script = document.querySelector('script[src="../static/js/update.js"]');
 var metodoPago = JSON.parse(script.getAttribute('metodoPago'));
 var monto = 0;
+let indiceColor = 0;
 
 
 function update_values(){
@@ -30,6 +31,16 @@ function update_values(){
         window.location.href = "/compraCancelada/0";
       } 
     })
+  var intervalID = setInterval(cambiarEstilo,1000);
+     function cambiarEstilo()
+   	{
+	const colores =["red","#F9C85A"];
+	$(".centrado").each(function(index){
+		const color = colores[index + indiceColor % colores.length];
+		$(this).css("color",color);
+	});
+	indiceColor = (indiceColor + 1) % colores.length;
+   	}
    }
 }
 function cerrarModal(){

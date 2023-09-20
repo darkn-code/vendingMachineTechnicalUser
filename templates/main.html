@@ -28,7 +28,7 @@
             <tbody>
             {%for i in range(0, lenPizza-1)%}
                 <tr class="fil1">
-                    <td><img src="../static/imagen/pizza{{i}}.png" class="pizzaImg" alt="Figura"></td>
+                    <td><img src="../static/imagen/{{nombreDePizza[i]}}.png" class="pizzaImg" alt="Figura"></td>
                     <td class="leftx2"><span class="shop-icon"></span> <span>{{nombreDePizza[i]}} Lista para comer</span> <br><br><br> <span class="shop-icon"></span> <span>{{nombreDePizza[i]}} lista para cocinar en casa</span></td>
                     <td class=" "><span>{{precioPizza[i]}}</span> <br><br><br><br><span>{{precioPizzaFria[i]}}</span></td>
                     <td><span class="btplus">
